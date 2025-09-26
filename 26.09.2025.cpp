@@ -8,6 +8,7 @@ int main() {
     студента. Определить, допущен ли студент к экзамену.
     Студент получает допуск, если его средний балл 4 балла
     и выше.
+    */
 
     int n1,n2,n3,n4,n5;
     char ball;
@@ -25,8 +26,8 @@ int main() {
         cout << "Вы не допущены";
         break;
     }
-    return 0;
-    */
+    
+    
 
     /*
     Задание 2. 
@@ -34,21 +35,22 @@ int main() {
     оно четное, умножить его на три, иначе — поделить на
     два. Результат вывести на экран.
     */
-   int n1;
+   int n2_1;
    double number;
    cout << "Введите число: ";
-   cin >> n1;
-    switch (n1 % 2) {
+   cin >> n2_1;
+    switch (n2_1 % 2) {
         case 0:
-            number = n1*3.0;
+            number = n2_1*3.0;
             cout << "Число четное\n";
             cout << number << "\n";
             break;
         case 1:
         case -1:
-            number = n1/2.0;
+            number = n2_1/2.0;
             cout << "Число не четное\n";
             cout << number << "\n";
             break;
     }
+    return 0;
 }
