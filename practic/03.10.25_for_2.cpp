@@ -2,19 +2,18 @@
 using namespace std;
 int main () {
     /* Задание 2
-    Пользователь вводит с клавиатуры число, необходимо
-    показать на экран сумму его цифр.
+    Пользователь вводит с клавиатуры число,
+    необходимо показать на экран сумму его цифр.
     */
     cout << "Задание 2" << endl;
     int number;
     cout << "Введите число: ";
     cin >> number;
-    for (int i = 0; number == 0 ; i++)
-    {
-        number = number /100;
-        cout << number;
+    int sum = 0;
+    for (; number != 0; number /= 10) {
+        sum += number % 10;
     }
-    cout << number << "z";
+    cout << "Сумма цифр: " << sum << endl;
     
 
 
