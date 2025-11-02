@@ -28,89 +28,85 @@ for i in range(15):
 print(r_num(1234))
 '''
 # Задание 2
-# 1. Рекурсивная функция для представления числа n в виде суммы m слагаемых
-def sum_representations(m, n, current=None, start=1):
-    """
-    Выводит все различные представления числа n в виде суммы m натуральных слагаемых.
-    Представления, различающиеся лишь порядком слагаемых, считаются одинаковыми.
-    """
-    if current is None:
-        current = []
-    
+def number_representations(n, m, c=None, start=1):
+    if c is None:
+        c = []
+
     if m == 1:
         if n >= start:
-            print(current + [n])
+            print(c + [n])
         return
     
     for i in range(start, n - m + 2):
-        sum_representations(m - 1, n - i, current + [i], i)
+        number_representations(n - i, m - 1, c + [i], i)
 
-# 1. Рекурсивная функция для вычисления n!!
-def double_factorial(n):
-    """Вычисляет n!! (двойной факториал)"""
-    if n <= 1:
+print("Представления числа 5 в виде суммы 3 слагаемых:")
+number_representations(5, 3)
+print("\n")
+
+
+def nn(n):
+    if n <= 0:
         return 1
-    return n * double_factorial(n - 2)
+    if n <= 2:
+        return n
+    return n * nn(n - 2)
+
+print(f"7!! = {nn(7)}")
+print(f"8!! = {nn(8)}")
+print("\n")
 
 
-# 2. Рекурсивная функция для подсчета единиц в двоичном представлении
 def count_ones_binary(n):
-    """Определяет количество единиц в двоичном представлении натурального числа"""
     if n == 0:
         return 0
     return (n % 2) + count_ones_binary(n // 2)
 
+number = 13
+print(f"Количество единиц в двоичном представлении {number}: {count_ones_binary(number)}")
+print("\n")
 
-# 3. Функция сложения двух чисел, используя только прибавление единицы
-def add_with_increment(a, b):
-    """Сложение двух чисел, используя только прибавление единицы"""
+
+def recursive_add(a, b):
     if b == 0:
         return a
-    return add_with_increment(a + 1, b - 1)
+    return recursive_add(a + 1, b - 1)
+
+print(f"5 + 3 = {recursive_add(5, 3)}")
+print("\n")
 
 
-# 4. Функция умножения двух чисел, используя только операцию сложения
-def multiply_with_addition(a, b):
-    """Умножение двух чисел, используя только операцию сложения"""
+def recursive_multiply(a, b):
     if b == 0:
         return 0
-    return a + multiply_with_addition(a, b - 1)
+    if b == 1:
+        return a
+    return a + recursive_multiply(a, b - 1)
+
+print(f"4 * 5 = {recursive_multiply(4, 5)}")
+print("\n")
 
 
-# 5. Проверка, является ли фрагмент строки палиндромом
-def is_palindrome(s, i, j):
-    """Проверяет, является ли фрагмент строки с i-го по j-й символ палиндромом"""
+def is_palindrome_substring(s, i, j):
     if i >= j:
         return True
     if s[i] != s[j]:
         return False
-    return is_palindrome(s, i + 1, j - 1)
+    return is_palindrome_substring(s, i + 1, j - 1)
+
+text = "радар"
+print(f"Строка '{text}' является палиндромом: {is_palindrome_substring(text, 0, len(text)-1)}")
+
+text2 = "программирование"
+print(f"Фрагмент 'грам' является палиндромом: {is_palindrome_substring(text2, 3, 6)}")
+print("\n")
 
 
-# 6. Подсчет количества цифр в заданном числе
 def count_digits(n):
-    """Подсчитывает количество цифр в заданном числе"""
-    if abs(n) < 10:
+    if n < 10:
         return 1
     return 1 + count_digits(n // 10)
 
-
-# Демонстрация работы всех функций
-if __name__ == "__main__":
-    print("1. Представления числа 6 в виде суммы 3 слагаемых:")
-    sum_representations(3, 6)
-    
-    print(f"\n1. Двойной факториал 7!! = {double_factorial(7)}")
-    print(f"1. Двойной факториал 8!! = {double_factorial(8)}")
-    
-    print(f"\n2. Количество единиц в двоичном представлении 13: {count_ones_binary(13)}")
-    
-    print(f"\n3. Сложение 5 + 3 = {add_with_increment(5, 3)}")
-    
-    print(f"\n4. Умножение 4 * 3 = {multiply_with_addition(4, 3)}")
-    
-    test_string = "радар"
-    print(f"\n5. Строка '{test_string}' является палиндромом: {is_palindrome(test_string, 0, len(test_string)-1)}")
-    
-    test_number = 12345
-    print(f"\n6. Количество цифр в числе {test_number}: {count_digits(test_number)}")
+number = 12345
+print(f"Количество цифр в числе {number}: {count_digits(number)}")
+print("\n")
