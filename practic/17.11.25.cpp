@@ -59,7 +59,7 @@ void big_number(int a, int b) {
     }
 }
 
-
+// 6: 1 число
 void numbers(int a) {
     if (a > 0) {
         cout << "Число положительное :()" << endl;
