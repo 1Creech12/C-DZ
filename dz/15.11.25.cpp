@@ -45,7 +45,7 @@ void diceGame() {
     cout << "Кто бросает первым? (1 - человек, 0 - компьютер): ";
     cin >> humanFirst;
     
-    cout << "=== ИГРА В КУБИКИ ===" << endl;
+    cout << "\tИгра в кубики" << endl;
     
     for (int round = 0; round < 5; round++) {
         cout << "\n--- Раунд " << (round + 1) << " ---" << endl;
@@ -70,7 +70,7 @@ void diceGame() {
         }
     }
     
-    cout << "\n\tРЕЗУЛЬТАТЫ:" << endl;
+    cout << "\n\tРезультаты:" << endl;
     cout << "Ваш общий счет: " << humanScore << endl;
     cout << "Счет компьютера: " << computerScore << endl;
     cout << "Ваша средняя сумма: " << (double)humanScore / 5 << endl;
@@ -86,10 +86,10 @@ void diceGame() {
 }
 
 // Задание 3 - Функция рисования прямоугольника
-void drawRectangle(int N, int K) {
-    cout << "Прямоугольник " << N << "x" << K << ":" << endl;
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < K; j++) {
+void drawRectangle(int n, int k) {
+    cout << "Прямоугольник " << n << "x" << k << ":" << endl;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < k; j++) {
             cout << "* ";
         }
         cout << endl;
