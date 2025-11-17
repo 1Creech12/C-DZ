@@ -216,6 +216,5 @@ int main() {
     int size2 = sizeof(arr2) / sizeof(arr2[0]);
     reverseArray(arr2, size2);
 
-
     return 0;
 }
