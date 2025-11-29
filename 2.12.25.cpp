@@ -1,76 +1,85 @@
 #include <iostream>
 #include <cmath>
 #include <iomanip>
+
 using namespace std;
 
-// Исходная функция
+// Исходная функция: 2^(-x) - sin(x) = 0
 double f(double x) {
-    return 2*x - 5*log(x) - 3;
+    return pow(2, -x) - sin(x);
 }
 
-// Производная функции
-double df(double x) {
-    return 2 - 5/x;
+// Функция для метода итераций: x = x + 0.5(2^(-x) - sin(x))
+double phi(double x) {
+    return x + 0.5 * (pow(2, -x) - sin(x));
 }
 
-// Метод Ньютона (касательных)
-double newton(double a, double b, double eps) {
-    double x0 = (f(a)*df(a) > 0) ? a : b;
-    double x = x0;
+// Метод половинного деления
+double bisection(double a, double b, double eps) {
+    if (f(a) * f(b) > 0) {
+        cout << "На отрезке нет корня!" << endl;
+        return NAN;
+    }
     
-    do {
-        x0 = x;
-        x = x0 - f(x0)/df(x0);
-    } while (fabs(x - x0) > eps);
-    
-    return x;
+    double c;
+    int iterations = 0;
+    while (fabs(b - a) > eps) {
+        c = (a + b) / 2;
+        if (f(a) * f(c) < 0)
+            b = c;
+        else
+            a = c;
+        iterations++;
+    }
+    cout << "Итераций выполнено: " << iterations << endl;
+    return (a + b) / 2;
 }
 
-// Метод хорд
-double chord(double a, double b, double eps) {
-    double fa = f(a), fb = f(b);
-    double x;
+// Метод простых итераций
+double iteration(double x0, double eps) {
+    double x1 = phi(x0);
+    int iterations = 0;
     
-    do {
-        x = (a*fb - b*fa)/(fb - fa);
-        double fx = f(x);
-        
-        if (fa*fx < 0) {
-            b = x;
-            fb = fx;
-        } else {
-            a = x;
-            fa = fx;
-        }
-    } while (fabs(b - a) > eps);
-    
-    return x;
+    while (fabs(x1 - x0) > eps) {
+        x0 = x1;
+        x1 = phi(x0);
+        iterations++;
+    }
+    cout << "Итераций выполнено: " << iterations << endl;
+    return x1;
 }
 
-// Комбинированный метод
-double combined(double a, double b, double eps) {
-    double x1, x2;
-    
-    do {
-        x1 = a - f(a)/df(a);
-        x2 = (a*f(b) - b*f(a))/(f(b) - f(a));
-        
-        a = min(x1, x2);
-        b = max(x1, x2);
-    } while (fabs(b - a) > eps);
-    
-    return (a + b)/2;
+// Функция для расчета количества итераций
+int calculateIterations(double a, double b, double eps) {
+    return ceil(log2((b - a) / eps));
 }
 
 int main() {
-    double a = 0.5, b = 1.0;
-    double eps = 1e-6;
+    double a = 0.6, b = 0.7;
+    double eps1 = 1e-5, eps2 = 1e-6;
     
     cout << fixed << setprecision(6);
+    cout << "Уравнение: 2^(-x) = sin(x)" << endl;
+    cout << "Промежуток: [" << a << ", " << b << "]" << endl << endl;
     
-    cout << "Метод Ньютона: " << newton(a, b, eps) << endl;
-    cout << "Метод хорд: " << chord(a, b, 1e-3) << endl;
-    cout << "Комбинированный: " << combined(a, b, eps) << endl;
+    // Проверка наличия корня
+    cout << "f(" << a << ") = " << f(a) << endl;
+    cout << "f(" << b << ") = " << f(b) << endl;
+    cout << "f(a)*f(b) = " << f(a)*f(b) << endl << endl;
+    
+    cout << "\tМетод половинного деления (точность 1e-5)" << endl;
+    double root1 = bisection(a, b, eps1);
+    cout << "Корень: " << root1 << endl;
+    cout << "Проверка: f(" << root1 << ") = " << f(root1) << endl << endl;
+    
+    // Расчет количества итераций
+    int n = calculateIterations(a, b, eps1);
+    cout << "Расчетное количество итераций: " << n << endl << endl;
+    
+    cout << "\tМетод простых итераций (точность 1e-6)" << endl;
+    double root2 = iteration(0.65, eps2);
+    cout << "Корень: " << root2 << endl;
+    cout << "Проверка: f(" << root2 << ") = " << f(root2) << endl;
     
     return 0;
 }
