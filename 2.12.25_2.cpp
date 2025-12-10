@@ -39,7 +39,7 @@ double iteration(double x0, double eps) {
     return x1;
 }
 
-// Функция для расчета количества итераций
+// Функция для расчета количества итераций.
 int calculateIterations(double a, double b, double eps) {
     return ceil(log2((b - a) / eps));
 }
