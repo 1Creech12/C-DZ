@@ -60,7 +60,7 @@ double simpson(double a, double b, int n) {
 
 int main() {
     cout << "\tФормулы Ньютона-Котеля\n";
-    cout << "=================================\n";
+    cout << "--------------------------------------\n";
     
     double a, b, eps;
     int n;
