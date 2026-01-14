@@ -1,32 +1,32 @@
 #include <iostream>
 using namespace std;
 int main(){
-    int S, L, N;
+    int s, l, n;
             cout << "Введите расстояние на полном баке (S): ";
-            cin >> S;
+            cin >> s;
             cout << "Введите общее расстояние (L): ";
-            cin >> L;
+            cin >> l;
             cout << "Введите количество участков между заправками: ";
-            cin >> N;
+            cin >> n;
 
-            int* D = new int[N];
+            int* d = new int[n];
             cout << "Введите расстояния между заправками: ";
-            for (int i = 0; i < N; i++) {
-                cin >> D[i];
+            for (int i = 0; i < n; i++) {
+                cin >> d[i];
             }
 
-            int fuel = S;
+            int fuel = s;
             int stations_count = 1;
-            int* stations = new int[N + 2];
+            int* stations = new int[n + 2];
             stations[0] = 1;
 
-            for (int i = 0; i < N; i++) {
-                if (fuel >= D[i]) {
-                    fuel -= D[i];
+            for (int i = 0; i < n; i++) {
+                if (fuel >= d[i]) {
+                    fuel -= d[i];
                 } else {
                     stations[stations_count] = i + 2;
                     stations_count++;
-                    fuel = S - D[i];
+                    fuel = s - d[i];
                 }
             }
 
@@ -39,7 +39,7 @@ int main(){
                 cout << endl;
             }
 
-            delete[] D;
+            delete[] d;
             delete[] stations;
         return 0;
 }
