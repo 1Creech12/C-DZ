@@ -1,7 +1,5 @@
 #include <iostream>
-
 using namespace std;
-
 enum class ErrorCode {
     success,
     file_not_found,
@@ -266,6 +264,5 @@ int main() {
             printColored(ConsoleColor::red, "Нет такей!\n");
         }
     }
-    
     return 0;
 }
