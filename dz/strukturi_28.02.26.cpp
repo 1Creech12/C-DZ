@@ -3,9 +3,9 @@
 using namespace std;
 // Задание 1: Структура для прямоугольника
 struct Rectangle {
-    double x, y;      // координаты левого верхнего угла
-    double width;     // ширина
-    double height;    // высота
+    double x, y;
+    double width;
+    double height;
 };
 
 // Функции для прямоугольника
