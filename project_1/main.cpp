@@ -1,7 +1,8 @@
-#include "colors.h"
-#include "screen.h"
-#include "song.h"
-#include "file.h"
+#include "colors.h" // Цвета
+#include "screen.h" // Функция отображения
+#include "song.h" // Функция показа песни
+#include "file.h" // Функция работы с файлами
+#include "search.h" // Функция поиска
 #include <iostream>
 using namespace std;
 
@@ -10,7 +11,7 @@ int main() {
 
     // Просто меню, не интересно
     cout << Colors::BRIGHT_GREEN << "\tКаталог песен\n\n" << Colors::RESET;
-    cout << Colors::BRIGHT_YELLOW << "1. Создать пример\n2. Открыть песню\n3. Удалить песню\n4. Выход\n" << Colors::RESET;
+    cout << Colors::BRIGHT_YELLOW << "1. Создать пример\n2. Открыть песню\n3. Удалить песню\n4. Найти текст по автора\n5. Найти текст по слово\n6. Выход\n" << Colors::RESET;
     cout << Colors::BRIGHT_MAGENTA << "Выборё: " << Colors::RESET;
     int choice;
     cin >> choice;
@@ -24,22 +25,26 @@ int main() {
     case 2:
         cout << Colors::BRIGHT_YELLOW << "\nВведите имя файла с песней: " << Colors::RESET;
         getline(cin, name);
-        showSong(name);
+        showSong(name); 
         break;
     case 3:
         cout << Colors::BRIGHT_YELLOW << "\nВведите имя файла для удаления: " << Colors::RESET;
         getline(cin, name);
         deleteSong(name);
         break;
-    case 4:
+    case 6:
         cout << Colors::BRIGHT_GREEN << "\nПока!\n" << Colors::RESET;
         return 0;
     // Должен быть поиск
-    //case 5:
-    //    return 0;
-    //    /* code */
-    //    break;
-    
+    case 4:
+        cout << Colors::BRIGHT_YELLOW << "\nВведите автора дял поиска: ";
+        getline(cin, name);
+        searchAuthor(name);
+        break;
+    case 5:
+        cout << Colors::BRIGHT_YELLOW << "\nВведите слово для поиска: ";
+        getline(cin, name);
+        searchWord(name);
     default:
         break;
     }
