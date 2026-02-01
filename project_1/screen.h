@@ -36,6 +36,10 @@ void printChorus() {
     cout << Colors::BRIGHT_CYAN << "\n\t Припев\n" << Colors::RESET;
 }
 
+void printBridj() {
+    cout << Colors::BRIGHT_CYAN << "\n\t Бридж\n" << Colors::RESET;
+}
+
 void printExecutor(const string& line) {
     cout << Colors::GREEN << line << Colors::RESET << endl;
 }

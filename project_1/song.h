@@ -11,7 +11,7 @@ using namespace std;
 // Эт файл читает + выводит в консоль
 void showSong(const string& filename) {
     // Просто ошибка - файла нет
-    ifstream file(filename);
+    ifstream file("music/" + filename);
     if (!file) {
         cout << Colors::BRIGHT_RED << "Не удалось открыть файл\n" << Colors::RESET;
         return;
@@ -40,6 +40,10 @@ void showSong(const string& filename) {
         // А это Припев
         else if (line.find("[Припев]") != -1 || line.find("Припев") != -1) {
             printChorus();
+        }
+        // Бридж
+        else if (line.find("[Бридж]") != -1 || line.find("Бридж") != -1) {
+            printBridj();
         }
         // Исполнитель
         else if (line.find("Исполнитель:") != -1) {
