@@ -2,9 +2,7 @@
 #include <fstream>
 #include <string>
 #include <cstring>
-
 using namespace std;
-
 // Прототипы функций
 void countWordsStartingWithChar();
 void replaceZerosAndOnes();
