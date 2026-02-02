@@ -13,7 +13,7 @@ int main() {
         // Просто меню, не интересно
         cout << Colors::BRIGHT_GREEN << "\tКаталог песен\n\n" << Colors::RESET;
         cout << Colors::BRIGHT_YELLOW << "1. Создать пример\n2. Открыть песню\n3. Удалить песню\n4. Найти текст по автора\n5. Найти текст по исполнителю\n6. Найти текст по слову\n7. Показать плейлист\n0. Выход\n" << Colors::RESET;
-        cout << Colors::BRIGHT_MAGENTA << "Выборё: " << Colors::RESET;
+        cout << Colors::BRIGHT_MAGENTA << "Выбор: " << Colors::RESET;
         int choice;
         cin >> choice;
         cin.ignore(); // Очистка буфера ввода
