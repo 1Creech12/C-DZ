@@ -1,6 +1,6 @@
 from calculator_with_history import CalculatorWithHistory
 def test_addition_with_history():
-    """Тест 1: Сложение и сохранение в истории"""
+    #Тест 1: Сложение и сохранение в истории
     # Создаем калькулятор с историей
     calc = CalculatorWithHistory()
     
@@ -19,7 +19,7 @@ def test_addition_with_history():
 
 
 def test_subtraction_with_history():
-    """Тест 2: Вычитание и сохранение в истории"""
+    #Тест 2: Вычитание и сохранение в истории
     calc = CalculatorWithHistory()
     
     # Выполняем вычитание
@@ -37,7 +37,7 @@ def test_subtraction_with_history():
 
 
 def test_multiple_operations_history():
-    """Тест 3: Несколько операций в истории"""
+    #Тест 3: Несколько операций в истории
     calc = CalculatorWithHistory()
     
     # Выполняем две операции
