@@ -53,25 +53,25 @@ public:
 int Person::count=0;
 
 // Задание 3
-class MyString {
+class String {
     int len;
     char* data;
 public:
-    MyString(const char* s="") { 
+    String(const char* s="") { 
         len = s ? strlen(s) : 0; 
         data = new char[len+1]; 
         if(s) strcpy(data,s); else data[0]=0;
     }
-    MyString(int l) : len{l>0?l:0} { 
+    String(int l) : len{l>0?l:0} { 
         data = new char[len+1]; 
         for(int i=0;i<len;i++) data[i]=' '; 
         data[len]=0;
     }
-    MyString(const MyString& s) : len{s.len} { 
+    String(const String& s) : len{s.len} { 
         data = new char[len+1]; 
         strcpy(data,s.data); 
     }
-    ~MyString() { delete[] data; }
+    ~String() { delete[] data; }
     void set(const char* s) { 
         if(!s) return;
         int nl = strlen(s);
@@ -142,7 +142,7 @@ int main() {
     p2.print(); cout << "\n\n";
     
     cout << "Задание 3\n";
-    MyString s1("Привет"), s2(5), s3(s1);
+    String s1("Привет"), s2(5), s3(s1);
     s1.print(); cout << "\n";
     s2.set("Мир");
     s2.print(); cout << "\n";
