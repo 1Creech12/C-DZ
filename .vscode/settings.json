@@ -80,5 +80,6 @@
         "cfenv": "cpp",
         "typeindex": "cpp"
     },
-    "C_Cpp.errorSquiggles": "disabled"
+    "C_Cpp.errorSquiggles": "disabled",
+    "cmake.sourceDirectory": "/Users/creech12/projects/C-DZ/Qt/prnod"
 }
