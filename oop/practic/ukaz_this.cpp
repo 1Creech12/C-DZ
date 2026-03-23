@@ -159,5 +159,5 @@ int main() {
     cout << "\nКопия дома:\n";
     h2.print();
     
-    return 0;
+    return 0; 
 }
