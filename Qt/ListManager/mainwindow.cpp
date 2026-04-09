@@ -28,12 +28,13 @@ void MainWindow::fillRandomLists(){
 
 void MainWindow::displayLists(){
     ui->textEdit->clear();
+    ui->textEdit_2->clear();
     ui->textEdit->append("Список 1: "+QString::number(list1.size())+" элементов");
     for (int val : list1)
         ui->textEdit->append(QString::number(val));
-    ui->textEdit->append("\nСписок 2: "+QString::number(list2.size())+" элементов");
+    ui->textEdit_2->append("\nСписок 2: "+QString::number(list2.size())+" элементов");
     for (int val : list2)
-        ui->textEdit->append(QString::number(val));
+        ui->textEdit_2->append(QString::number(val));
 }
 void MainWindow::on_pushButton_clicked()
 {

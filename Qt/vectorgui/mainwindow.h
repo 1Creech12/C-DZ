@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QVector>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -18,14 +19,12 @@ public:
     ~MainWindow() override;
 
 private slots:
-    void on_pushButton_clicked();
     void on_pushButton_2_clicked();
+
+    void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
-    QList<int> list1;
-    QList<int> list2;
-    void fillRandomLists();
-    void displayLists();
+    QVector<QVector<int>> arr;
 };
 #endif // MAINWINDOW_H
