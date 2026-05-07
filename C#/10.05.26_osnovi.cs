@@ -7,19 +7,19 @@ namespace TasksSolution
         static void Main(string[] args)
         {
             // Задание 1: Квадраты на прямоугольнике
-            Console.WriteLine("=== Задание 1 ===");
+            Console.WriteLine("Задание 1");
             Task1();
 
-            Console.WriteLine("\n=== Задание 2 ===");
+            Console.WriteLine("\nЗадание 2");
             Task2();
 
-            Console.WriteLine("\n=== Задание 3 ===");
+            Console.WriteLine("\nЗадание 3");
             Task3();
 
-            Console.WriteLine("\n=== Задание 4 ===");
+            Console.WriteLine("\nЗадание 4");
             Task4();
 
-            Console.WriteLine("\nНажмите любую клавишу для выхода...");
+            Console.WriteLine("\nНажмите для выхода");
             Console.ReadKey();
         }
 
@@ -27,24 +27,20 @@ namespace TasksSolution
         {
             int A, B, C;
 
-            // Ввод данных с проверкой
             A = GetPositiveInt("Введите A (длина прямоугольника): ");
             B = GetPositiveInt("Введите B (ширина прямоугольника): ");
             C = GetPositiveInt("Введите C (сторона квадрата): ");
 
-            // Проверка возможности размещения
             if (C > A || C > B)
             {
                 Console.WriteLine("Невозможно разместить ни одного квадрата! Сторона квадрата превышает размеры прямоугольника.");
                 return;
             }
 
-            // Количество квадратов по горизонтали и вертикали
             int countHorizontal = A / C;
             int countVertical = B / C;
             int totalSquares = countHorizontal * countVertical;
 
-            // Площадь незанятой части
             int occupiedArea = totalSquares * (C * C);
             int totalArea = A * B;
             int freeArea = totalArea - occupiedArea;
