@@ -21,13 +21,47 @@
   </property>
   <property name="styleSheet">
    <string notr="true">
-    QMainWindow {
-        background-color: #f5f5f5;
-    }
+QMainWindow {
+    background-color: #ffffff;
+}
+QLabel {
+    color: #333;
+}
+QPushButton {
+    background-color: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 6px 12px;
+    color: #333;
+    font-weight: 500;
+}
+QPushButton:hover {
+    background-color: #eeeeee;
+}
+QPushButton:pressed {
+    background-color: #e0e0e0;
+}
+QComboBox {
+    background-color: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+QListWidget {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+}
+QListWidget::item {
+    padding: 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+QListWidget::item:selected {
+    background-color: #f5f5f5;
+}
    </string>
   </property>
-  <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,1">
     <property name="spacing">
      <number>0</number>
     </property>
@@ -43,6 +77,7 @@
     <property name="bottomMargin">
      <number>0</number>
     </property>
+    <!-- TOP BAR -->
     <item>
      <widget class="QWidget" name="topBar" native="true">
       <property name="minimumSize">
@@ -59,43 +94,42 @@
       </property>
       <property name="styleSheet">
        <string notr="true">
-        QWidget#topBar {
-            background-color: white;
-            border-bottom: 1px solid #e0e0e0;
-        }
+QWidget#topBar {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+}
        </string>
       </property>
-      <layout class="QHBoxLayout" name="topBarLayout">
+      <layout class="QHBoxLayout" name="horizontalLayout">
        <property name="leftMargin">
-        <number>20</number>
+        <number>16</number>
        </property>
        <property name="topMargin">
-        <number>0</number>
+        <number>12</number>
        </property>
        <property name="rightMargin">
-        <number>20</number>
+        <number>16</number>
        </property>
        <property name="bottomMargin">
-        <number>0</number>
+        <number>12</number>
+       </property>
+       <property name="spacing">
+        <number>12</number>
        </property>
        <item>
-        <widget class="QLabel" name="appTitleLabel">
-         <property name="styleSheet">
-          <string notr="true">
-           font-size: 18px;
-           font-weight: bold;
-           color: #333;
-          </string>
-         </property>
+        <widget class="QLabel" name="appTitle">
          <property name="text">
-          <string>📚 Journal</string>
+          <string>📚 Top Academy Journal</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">font-size: 18px; font-weight: bold; color: #333;</string>
          </property>
         </widget>
        </item>
        <item>
-        <spacer name="horizontalSpacer_2">
+        <spacer name="horizontalSpacer">
          <property name="orientation">
-          <enum>Qt::Orientation::Horizontal</enum>
+          <enum>Qt::Horizontal</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -106,431 +140,191 @@
         </spacer>
        </item>
        <item>
-        <widget class="QWidget" name="userInfoWidget" native="true">
-         <layout class="QHBoxLayout" name="userInfoLayout">
-          <property name="spacing">
-           <number>10</number>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QLabel" name="userIconLabel">
-            <property name="styleSheet">
-             <string notr="true">font-size: 20px;</string>
-            </property>
-            <property name="text">
-             <string>👤</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="userNameLabel">
-            <property name="styleSheet">
-             <string notr="true">
-              font-size: 14px;
-              color: #555;
-             </string>
-            </property>
-            <property name="text">
-             <string>Пользователь</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="logoutButton">
-            <property name="cursor">
-             <cursorShape>PointingHandCursor</cursorShape>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">
-              QPushButton {
-                  background-color: transparent;
-                  color: #f44336;
-                  border: 1px solid #f44336;
-                  border-radius: 5px;
-                  padding: 5px 15px;
-                  font-size: 13px;
-              }
-              QPushButton:hover {
-                  background-color: #f44336;
-                  color: white;
-              }
-             </string>
-            </property>
-            <property name="text">
-             <string>Выйти</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
+        <widget class="QLabel" name="userLabel">
+         <property name="text">
+          <string>Пользователь</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: #666; font-size: 12px;</string>
+         </property>
         </widget>
        </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QWidget" name="contentWidget" native="true">
-      <layout class="QHBoxLayout" name="contentLayout">
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
        <item>
-        <widget class="QWidget" name="sidebar" native="true">
-         <property name="minimumSize">
-          <size>
-           <width>200</width>
-           <height>0</height>
-          </size>
-         </property>
+        <widget class="QPushButton" name="logoutButton">
          <property name="maximumSize">
           <size>
-           <width>200</width>
+           <width>80</width>
            <height>16777215</height>
           </size>
          </property>
+         <property name="text">
+          <string>Выход</string>
+         </property>
          <property name="styleSheet">
           <string notr="true">
-           QWidget#sidebar {
-               background-color: #2c3e50;
-           }
+QPushButton {
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-weight: 500;
+}
+QPushButton:hover {
+    background-color: #ff5252;
+}
           </string>
          </property>
-         <layout class="QVBoxLayout" name="sidebarLayout">
-          <property name="spacing">
-           <number>5</number>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>20</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>20</number>
-          </property>
-          <item>
-           <widget class="QPushButton" name="studentsButton">
-            <property name="cursor">
-             <cursorShape>PointingHandCursor</cursorShape>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">
-              QPushButton {
-                  background-color: transparent;
-                  color: #bdc3c7;
-                  border: none;
-                  border-radius: 5px;
-                  padding: 12px 20px;
-                  text-align: left;
-                  font-size: 14px;
-                  margin: 2px 10px;
-              }
-              QPushButton:hover {
-                  background-color: #34495e;
-                  color: white;
-              }
-              QPushButton:checked {
-                  background-color: #4CAF50;
-                  color: white;
-              }
-             </string>
-            </property>
-            <property name="text">
-             <string>  👥  Ученики</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="homeworkButton">
-            <property name="cursor">
-             <cursorShape>PointingHandCursor</cursorShape>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">
-              QPushButton {
-                  background-color: transparent;
-                  color: #bdc3c7;
-                  border: none;
-                  border-radius: 5px;
-                  padding: 12px 20px;
-                  text-align: left;
-                  font-size: 14px;
-                  margin: 2px 10px;
-              }
-              QPushButton:hover {
-                  background-color: #34495e;
-                  color: white;
-              }
-              QPushButton:checked {
-                  background-color: #4CAF50;
-                  color: white;
-              }
-             </string>
-            </property>
-            <property name="text">
-             <string>  📝  Домашние задания</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="scheduleButton">
-            <property name="cursor">
-             <cursorShape>PointingHandCursor</cursorShape>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">
-              QPushButton {
-                  background-color: transparent;
-                  color: #bdc3c7;
-                  border: none;
-                  border-radius: 5px;
-                  padding: 12px 20px;
-                  text-align: left;
-                  font-size: 14px;
-                  margin: 2px 10px;
-              }
-              QPushButton:hover {
-                  background-color: #34495e;
-                  color: white;
-              }
-              QPushButton:checked {
-                  background-color: #4CAF50;
-                  color: white;
-              }
-             </string>
-            </property>
-            <property name="text">
-             <string>  📅  Расписание</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="gradesButton">
-            <property name="cursor">
-             <cursorShape>PointingHandCursor</cursorShape>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">
-              QPushButton {
-                  background-color: transparent;
-                  color: #bdc3c7;
-                  border: none;
-                  border-radius: 5px;
-                  padding: 12px 20px;
-                  text-align: left;
-                  font-size: 14px;
-                  margin: 2px 10px;
-              }
-              QPushButton:hover {
-                  background-color: #34495e;
-                  color: white;
-              }
-              QPushButton:checked {
-                  background-color: #4CAF50;
-                  color: white;
-              }
-             </string>
-            </property>
-            <property name="text">
-             <string>  📊  Оценки</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_sidebar">
-            <property name="orientation">
-             <enum>Qt::Orientation::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QStackedWidget" name="pagesStack">
-         <property name="styleSheet">
-          <string notr="true">
-           QStackedWidget {
-               background-color: white;
-               margin: 10px;
-               border-radius: 10px;
-           }
-          </string>
-         </property>
-         <property name="currentIndex">
-          <number>0</number>
-         </property>
-         <widget class="QWidget" name="studentsPage">
-          <layout class="QVBoxLayout" name="studentsLayout">
-           <item>
-            <widget class="QLabel" name="studentsTitle">
-             <property name="styleSheet">
-              <string notr="true">
-               font-size: 20px;
-               font-weight: bold;
-               color: #333;
-               padding: 20px;
-              </string>
-             </property>
-             <property name="text">
-              <string>Список учеников</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QTableWidget" name="studentsTable">
-             <property name="styleSheet">
-              <string notr="true">
-               QTableWidget {
-                   border: none;
-                   gridline-color: #f0f0f0;
-               }
-               QTableWidget::item {
-                   padding: 10px;
-               }
-               QHeaderView::section {
-                   background-color: #f8f9fa;
-                   border: none;
-                   border-bottom: 2px solid #e0e0e0;
-                   padding: 10px;
-                   font-weight: bold;
-                   color: #555;
-               }
-              </string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="homeworkPage">
-          <layout class="QVBoxLayout" name="homeworkLayout">
-           <item>
-            <widget class="QLabel" name="homeworkTitle">
-             <property name="styleSheet">
-              <string notr="true">
-               font-size: 20px;
-               font-weight: bold;
-               color: #333;
-               padding: 20px;
-              </string>
-             </property>
-             <property name="text">
-              <string>Домашние задания</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QTableWidget" name="homeworkTable"/>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="schedulePage">
-          <layout class="QVBoxLayout" name="scheduleLayout">
-           <item>
-            <widget class="QLabel" name="scheduleTitle">
-             <property name="styleSheet">
-              <string notr="true">
-               font-size: 20px;
-               font-weight: bold;
-               color: #333;
-               padding: 20px;
-              </string>
-             </property>
-             <property name="text">
-              <string>Расписание</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QTableWidget" name="scheduleTable"/>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="gradesPage">
-          <layout class="QVBoxLayout" name="gradesLayout">
-           <item>
-            <widget class="QLabel" name="gradesTitle">
-             <property name="styleSheet">
-              <string notr="true">
-               font-size: 20px;
-               font-weight: bold;
-               color: #333;
-               padding: 20px;
-              </string>
-             </property>
-             <property name="text">
-              <string>Оценки</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QTableWidget" name="gradesTable"/>
-           </item>
-          </layout>
-         </widget>
         </widget>
        </item>
       </layout>
      </widget>
     </item>
+    <!-- HEADER С ДАТОЙ И УПРАВЛЕНИЕМ -->
+    <item>
+     <widget class="QWidget" name="headerWidget" native="true">
+      <layout class="QHBoxLayout" name="headerLayout">
+       <property name="leftMargin">
+        <number>16</number>
+       </property>
+       <property name="topMargin">
+        <number>12</number>
+       </property>
+       <property name="rightMargin">
+        <number>16</number>
+       </property>
+       <property name="bottomMargin">
+        <number>12</number>
+       </property>
+       <property name="spacing">
+        <number>12</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="dateLabel">
+         <property name="text">
+          <string>Понедельник, 1 января</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">font-size: 20px; font-weight: bold; color: #333;</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="viewModeCombo">
+         <property name="maximumWidth">
+          <number>120</number>
+         </property>
+         <item>
+          <property name="text">
+           <string>День</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Неделя</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Месяц</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <spacer name="headerSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="syncStatusLabel">
+         <property name="text">
+          <string>✓ Синхронизировано</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: #4caf50; font-size: 12px;</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <!-- КНОПКИ НАВИГАЦИИ -->
+    <item>
+     <widget class="QWidget" name="navWidget" native="true">
+      <layout class="QHBoxLayout" name="navLayout">
+       <property name="leftMargin">
+        <number>16</number>
+       </property>
+       <property name="topMargin">
+        <number>8</number>
+       </property>
+       <property name="rightMargin">
+        <number>16</number>
+       </property>
+       <property name="bottomMargin">
+        <number>8</number>
+       </property>
+       <property name="spacing">
+        <number>8</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="prevButton">
+         <property name="text">
+          <string>◀ Назад</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="nextButton">
+         <property name="text">
+          <string>Вперёд ▶</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="todayButton">
+         <property name="text">
+          <string>Сегодня</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="navSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="syncButton">
+         <property name="text">
+          <string>⟳ Синхронизировать</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <!-- СПИСОК ЗАНЯТИЙ -->
+    <item>
+     <widget class="QListWidget" name="lessonsListWidget"/>
+    </item>
    </layout>
-  </widget>
-  <widget class="QStatusBar" name="statusBar">
-   <property name="styleSheet">
-    <string notr="true">
-     QStatusBar {
-         background-color: white;
-         border-top: 1px solid #e0e0e0;
-         padding: 5px;
-     }
-    </string>
-   </property>
   </widget>
  </widget>
  <resources/>

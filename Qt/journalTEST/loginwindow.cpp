@@ -1,108 +1,73 @@
 #include "LoginWindow.h"
+#include "ui_loginwindow.h"
+#include "MainWindow.h"
+#include "ApiClient.h"
+#include "AuthManager.h"
+#include "AuthModels.h"
 #include <QMessageBox>
-#include <QApplication>
-#include <QStyle>
 
-LoginWindow::LoginWindow(AuthManager *authManager, QWidget *parent)
+LoginWindow::LoginWindow(AuthManager *authManager, ApiClient *apiClient, QWidget *parent)
     : QWidget(parent)
+    , ui(new Ui::LoginWindow)
     , m_authManager(authManager)
+    , m_apiClient(apiClient)
+    , m_mainWindow(nullptr)
 {
-    setupUi();
+    ui->setupUi(this);
 
     connect(m_authManager, &AuthManager::loginSuccess,
             this, &LoginWindow::onLoginSuccess);
     connect(m_authManager, &AuthManager::loginFailed,
             this, &LoginWindow::onLoginFailed);
-
-    setWindowTitle("Journal - Вход");
-    setFixedSize(400, 300);
+    connect(ui->loginButton, &QPushButton::clicked,
+            this, &LoginWindow::onLoginClicked);
+    connect(ui->passwordEdit, &QLineEdit::returnPressed,
+            this, &LoginWindow::onLoginClicked);
 }
 
-void LoginWindow::setupUi()
+LoginWindow::~LoginWindow()
 {
-    auto *layout = new QVBoxLayout(this);
-    layout->setSpacing(15);
-    layout->setContentsMargins(40, 40, 40, 40);
-
-    // Заголовок
-    auto *titleLabel = new QLabel("Авторизация");
-    titleLabel->setAlignment(Qt::AlignCenter);
-    titleLabel->setStyleSheet("font-size: 20px; font-weight: bold; margin-bottom: 20px;");
-    layout->addWidget(titleLabel);
-
-    // Поле логина
-    auto *userLabel = new QLabel("Логин:");
-    m_usernameEdit = new QLineEdit();
-    m_usernameEdit->setPlaceholderText("Введите логин");
-    layout->addWidget(userLabel);
-    layout->addWidget(m_usernameEdit);
-
-    // Поле пароля
-    auto *passLabel = new QLabel("Пароль:");
-    m_passwordEdit = new QLineEdit();
-    m_passwordEdit->setPlaceholderText("Введите пароль");
-    m_passwordEdit->setEchoMode(QLineEdit::Password);
-    layout->addWidget(passLabel);
-    layout->addWidget(m_passwordEdit);
-
-    // Чекбокс "Запомнить меня" (просто визуальный, токен сохраняется всегда)
-    m_rememberCheck = new QCheckBox("Запомнить меня");
-    m_rememberCheck->setChecked(true);
-    layout->addWidget(m_rememberCheck);
-
-    // Кнопка входа
-    m_loginButton = new QPushButton("Войти");
-    m_loginButton->setStyleSheet(
-        "QPushButton { background-color: #4CAF50; color: white; padding: 10px; "
-        "border-radius: 5px; font-size: 14px; }"
-        "QPushButton:hover { background-color: #45a049; }"
-        );
-    layout->addWidget(m_loginButton);
-
-    // Статус
-    m_statusLabel = new QLabel();
-    m_statusLabel->setAlignment(Qt::AlignCenter);
-    m_statusLabel->setStyleSheet("color: red;");
-    layout->addWidget(m_statusLabel);
-
-    layout->addStretch();
-
-    connect(m_loginButton, &QPushButton::clicked, this, &LoginWindow::onLoginClicked);
-    connect(m_passwordEdit, &QLineEdit::returnPressed, this, &LoginWindow::onLoginClicked);
+    delete ui;
 }
 
 void LoginWindow::onLoginClicked()
 {
-    QString username = m_usernameEdit->text().trimmed();
-    QString password = m_passwordEdit->text();
+    QString username = ui->usernameEdit->text().trimmed();
+    QString password = ui->passwordEdit->text();
 
     if (username.isEmpty() || password.isEmpty()) {
-        m_statusLabel->setText("Заполните все поля");
+        ui->statusLabel->setText("Заполните все поля");
+        ui->statusLabel->setStyleSheet("color: #ff6b6b; font-size: 12px;");
         return;
     }
 
-    m_statusLabel->setText("Выполняется вход...");
-    m_statusLabel->setStyleSheet("color: blue;");
-    m_loginButton->setEnabled(false);
+    ui->statusLabel->setText("Выполняется вход...");
+    ui->statusLabel->setStyleSheet("color: #2196f3; font-size: 12px;");
+    ui->loginButton->setEnabled(false);
 
     m_authManager->login(username, password);
 }
 
 void LoginWindow::onLoginSuccess(const AuthData &data)
 {
-    m_statusLabel->setText("✅ Вход выполнен!");
-    m_statusLabel->setStyleSheet("color: green;");
+    ui->statusLabel->setText("✅ Вход выполнен!");
+    ui->statusLabel->setStyleSheet("color: #4caf50; font-size: 12px;");
 
     QMessageBox::information(this, "Успех",
                              QString("Добро пожаловать!\nРоль: %1\nГород: %2")
                                  .arg(data.user_role, data.city_data.name));
 
-    close(); // Закрываем окно входа
+    // Открываем главное окно
+    m_mainWindow = new MainWindow(m_authManager, m_apiClient, nullptr);
+    m_mainWindow->show();
+
+    hide(); // Скрываем окно входа
 }
 
 void LoginWindow::onLoginFailed(const QString &error)
 {
-    m_statusLabel->setText("❌ " + error);
-    m_statusLabel->setStyleSheet("color: red;");
-    m_loginButton->setEnabled(true);
+    ui->statusLabel->setText("❌ " + error);
+    ui->statusLabel->setStyleSheet("color: #f44336; font-size: 12px;");
+    ui->loginButton->setEnabled(true);
 }
+

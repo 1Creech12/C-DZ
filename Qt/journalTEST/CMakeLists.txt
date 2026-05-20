@@ -9,8 +9,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Ищем Qt6 с модулем Network
-find_package(Qt6 REQUIRED COMPONENTS Core Widgets Network)
+# Ищем Qt6 с модулями Network и Sql
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets Network Sql)
 
 # Все исходники в одной папке
 set(PROJECT_SOURCES
@@ -26,6 +26,11 @@ set(PROJECT_SOURCES
     authmanager.cpp
     authmanager.h
     AuthModels.h
+    ScheduleModels.h
+    ScheduleManager.cpp
+    ScheduleManager.h
+    ScheduleWidget.cpp
+    ScheduleWidget.h
 )
 
 # Основное приложение
@@ -40,6 +45,7 @@ target_link_libraries(JournalTest PRIVATE
     Qt6::Core
     Qt6::Widgets
     Qt6::Network
+    Qt6::Sql
 )
 
 # Тест авторизации
@@ -52,6 +58,7 @@ add_executable(test_auth
 target_link_libraries(test_auth PRIVATE
     Qt6::Core
     Qt6::Network
+    Qt6::Sql
 )
 
 # Свойства для macOS

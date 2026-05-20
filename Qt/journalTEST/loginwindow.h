@@ -2,19 +2,25 @@
 #define LOGINWINDOW_H
 
 #include <QWidget>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QLabel>
-#include <QCheckBox>
-#include <QVBoxLayout>
-#include "AuthManager.h"
+
+QT_BEGIN_NAMESPACE
+namespace Ui {
+class LoginWindow;
+}
+QT_END_NAMESPACE
+
+class AuthManager;
+class ApiClient;
+class MainWindow;
+struct AuthData;
 
 class LoginWindow : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit LoginWindow(AuthManager *authManager, QWidget *parent = nullptr);
+    explicit LoginWindow(AuthManager *authManager, ApiClient *apiClient, QWidget *parent = nullptr);
+    ~LoginWindow() override;
 
 private slots:
     void onLoginClicked();
@@ -22,15 +28,10 @@ private slots:
     void onLoginFailed(const QString &error);
 
 private:
+    Ui::LoginWindow *ui;
     AuthManager *m_authManager;
-
-    QLineEdit *m_usernameEdit;
-    QLineEdit *m_passwordEdit;
-    QCheckBox *m_rememberCheck;
-    QPushButton *m_loginButton;
-    QLabel *m_statusLabel;
-
-    void setupUi();
+    ApiClient *m_apiClient;
+    MainWindow *m_mainWindow;
 };
 
 #endif // LOGINWINDOW_H

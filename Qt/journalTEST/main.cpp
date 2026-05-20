@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     ApiClient apiClient;
     AuthManager authManager(&apiClient);
 
-    LoginWindow loginWindow(&authManager);
+    LoginWindow loginWindow(&authManager, &apiClient);
     loginWindow.show();
 
     // автовход
