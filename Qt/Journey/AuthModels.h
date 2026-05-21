@@ -22,6 +22,7 @@ struct AuthData {
     QString user_role;              // "student", "teacher", etc.
     int user_id = 0;                // из JWT: userId
     CityData city_data;
+    QString display_name;
 
     bool isValid() const {
         return !access_token.isEmpty();

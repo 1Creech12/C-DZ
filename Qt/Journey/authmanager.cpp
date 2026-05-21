@@ -76,6 +76,10 @@ void AuthManager::refreshToken()
 
 void AuthManager::processLoginResponse(const QJsonObject &json)
 {
+    // Временный вывод всего ответа для отладки
+    qDebug() << "📦 ПОЛНЫЙ ОТВЕТ СЕРВЕРА:";
+    qDebug() << QJsonDocument(json).toJson(QJsonDocument::Indented);
+
     m_authData.access_token = json["access_token"].toString();
     m_authData.refresh_token = json["refresh_token"].toString();
     m_authData.expires_in_access = json["expires_in_access"].toVariant().toLongLong();
@@ -94,6 +98,21 @@ void AuthManager::processLoginResponse(const QJsonObject &json)
 
     QJsonObject jwtPayload = decodeJwtPayload(m_authData.access_token);
     m_authData.user_id = jwtPayload["userId"].toInt();
+
+    // Извлекаем имя из JWT (если есть)
+    m_authData.display_name = jwtPayload["name"].toString();
+
+    // Если в JWT нет имени, берём из ответа сервера
+    if (m_authData.display_name.isEmpty()) {
+        m_authData.display_name = json["display_name"].toString();
+    }
+
+    // Если и в ответе нет — формируем из роли и ID
+    if (m_authData.display_name.isEmpty()) {
+        m_authData.display_name = QString("%1 #%2")
+        .arg(m_authData.user_role)
+            .arg(m_authData.user_id);
+    }
 
     m_apiClient->setAuthToken(m_authData.access_token);
     saveToSettings();
@@ -126,6 +145,7 @@ void AuthManager::saveToSettings()
     m_settings.setValue("auth/user_type", m_authData.user_type);
     m_settings.setValue("auth/user_role", m_authData.user_role);
     m_settings.setValue("auth/user_id", m_authData.user_id);
+    m_settings.setValue("auth/display_name", m_authData.display_name);
     m_settings.setValue("auth/city_name", m_authData.city_data.name);
     m_settings.setValue("auth/city_id", m_authData.city_data.id_city);
     m_settings.sync();
@@ -140,6 +160,7 @@ void AuthManager::loadFromSettings()
     m_authData.user_type = m_settings.value("auth/user_type").toInt();
     m_authData.user_role = m_settings.value("auth/user_role").toString();
     m_authData.user_id = m_settings.value("auth/user_id").toInt();
+    m_authData.display_name = m_settings.value("auth/display_name").toString();
     m_authData.city_data.name = m_settings.value("auth/city_name").toString();
     m_authData.city_data.id_city = m_settings.value("auth/city_id").toInt();
 }

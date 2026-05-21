@@ -9,6 +9,8 @@ int main(int argc, char *argv[])
     QApplication::setApplicationName("JournalApp");
     QApplication::setOrganizationName("TopAcademy");
 
+    QLocale::setDefault(QLocale(QLocale::Russian, QLocale::Russia));
+
     ApiClient apiClient;
     AuthManager authManager(&apiClient);
 

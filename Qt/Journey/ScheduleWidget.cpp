@@ -193,7 +193,8 @@ void ScheduleWidget::onDateSelected(const QDate &date)
 void ScheduleWidget::updateDayView(const QDate &date)
 {
     m_currentDate = date;
-    m_dateLabel->setText(date.toString("dddd, d MMMM"));
+    QLocale russian(QLocale::Russian);
+    m_dateLabel->setText(russian.toString(date, "dddd, d MMMM"));
 
     m_lessonsListWidget->clear();
     m_scheduleManager->loadDaySchedule(date);
@@ -201,9 +202,10 @@ void ScheduleWidget::updateDayView(const QDate &date)
 
 void ScheduleWidget::updateWeekView(const QDate &startDate)
 {
+    QLocale russian(QLocale::Russian);
     m_dateLabel->setText(QString("%1 - %2")
-        .arg(startDate.toString("d MMM"))
-        .arg(startDate.addDays(6).toString("d MMM yyyy")));
+        .arg(russian.toString(startDate, "d MMM"))
+        .arg(russian.toString(startDate.addDays(6), "d MMM yyyy")));
 
     m_lessonsListWidget->clear();
     m_scheduleManager->loadWeekSchedule(startDate);
@@ -211,7 +213,8 @@ void ScheduleWidget::updateWeekView(const QDate &startDate)
 
 void ScheduleWidget::updateMonthView(const QDate &month)
 {
-    m_dateLabel->setText(month.toString("MMMM yyyy"));
+    QLocale russian(QLocale::Russian);
+    m_dateLabel->setText(russian.toString(month, "yyyy MMMM"));
     m_lessonsListWidget->clear();
     m_scheduleManager->loadMonthSchedule(month);
 }
