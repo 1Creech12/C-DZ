@@ -24,23 +24,12 @@ ScheduleManager::~ScheduleManager()
 void ScheduleManager::initDatabase()
 {
     m_db = QSqlDatabase::addDatabase("QSQLITE");
-    m_db.setDatabaseName("journal_schedule.db");
+    m_db.setDatabaseName("/Users/creech12/projects/C-DZ/Qt/Journey/db/schedule.db");
 
     if (!m_db.open()) {
         qWarning() << "❌ Ошибка открытия БД:" << m_db.lastError().text();
         return;
     }
-
-    QSqlQuery query;
-    query.exec("CREATE TABLE IF NOT EXISTS lessons ("
-               "id INTEGER PRIMARY KEY,"
-               "date TEXT,"
-               "subject TEXT,"
-               "classroom TEXT,"
-               "teacher TEXT,"
-               "start_time TEXT,"
-               "end_time TEXT,"
-               "type TEXT)");
 
     qDebug() << "✅ БД инициализирована";
 }
@@ -129,8 +118,7 @@ void ScheduleManager::refreshFromServer()
 
 bool ScheduleManager::hasInternetConnection() const
 {
-    // Простая проверка - будет улучшена позже
-    return true;
+    return false;
 }
 
 void ScheduleManager::onScheduleDataReceived(const QJsonObject &json)
@@ -179,15 +167,14 @@ void ScheduleManager::saveDayToDatabase(const DaySchedule &schedule)
     QSqlQuery query;
 
     for (const Lesson &lesson : schedule.lessons) {
-        query.prepare("INSERT INTO lessons (date, subject, classroom, teacher, start_time, end_time, type) "
-                     "VALUES (?, ?, ?, ?, ?, ?, ?)");
+        query.prepare("INSERT OR IGNORE INTO lessons (date, lesson, started_at, finished_at, teacher_name, subject_name, room_name) "
+                     "VALUES (?, 1, ?, ?, ?, ?, ?)");
         query.addBindValue(schedule.date.toString("yyyy-MM-dd"));
-        query.addBindValue(lesson.subject);
-        query.addBindValue(lesson.classroom);
-        query.addBindValue(lesson.teacher);
         query.addBindValue(lesson.startTime.toString("HH:mm"));
         query.addBindValue(lesson.endTime.toString("HH:mm"));
-        query.addBindValue(lesson.lessonType);
+        query.addBindValue(lesson.teacher);
+        query.addBindValue(lesson.subject);
+        query.addBindValue(lesson.classroom);
 
         if (!query.exec()) {
             qWarning() << "❌ Ошибка сохранения:" << query.lastError().text();
@@ -198,7 +185,7 @@ void ScheduleManager::saveDayToDatabase(const DaySchedule &schedule)
 void ScheduleManager::loadDayFromDatabase(QDate date, DaySchedule &schedule)
 {
     QSqlQuery query;
-    query.prepare("SELECT subject, classroom, teacher, start_time, end_time, type FROM lessons WHERE date = ?");
+    query.prepare("SELECT subject_name, room_name, teacher_name, started_at, finished_at FROM lessons WHERE date = ? ORDER BY started_at");
     query.addBindValue(date.toString("yyyy-MM-dd"));
 
     if (!query.exec()) {
@@ -213,7 +200,6 @@ void ScheduleManager::loadDayFromDatabase(QDate date, DaySchedule &schedule)
         lesson.teacher = query.value(2).toString();
         lesson.startTime = QTime::fromString(query.value(3).toString(), "HH:mm");
         lesson.endTime = QTime::fromString(query.value(4).toString(), "HH:mm");
-        lesson.lessonType = query.value(5).toString();
 
         schedule.lessons.append(lesson);
     }
