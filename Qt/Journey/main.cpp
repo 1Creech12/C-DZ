@@ -17,7 +17,8 @@ int main(int argc, char *argv[])
     LoginWindow loginWindow(&authManager, &apiClient);
     loginWindow.show();
 
-    // автовход
+    loginWindow.loadSavedCredentials();
+
     authManager.tryAutoLogin();
 
     return app.exec();

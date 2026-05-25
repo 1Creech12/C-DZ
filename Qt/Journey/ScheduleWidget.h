@@ -52,8 +52,6 @@ private:
     QPushButton *m_prevButton;
     QPushButton *m_nextButton;
     QPushButton *m_todayButton;
-    QPushButton *m_syncButton;
-    QLabel *m_syncStatusLabel;
     QListWidget *m_lessonsListWidget;
     QCalendarWidget *m_calendarWidget;
 };

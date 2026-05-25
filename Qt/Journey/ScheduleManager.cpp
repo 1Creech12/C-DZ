@@ -7,11 +7,15 @@
 #include <QJsonArray>
 #include <QDebug>
 #include <QNetworkAccessManager>
+#include <QCoreApplication>
 
 ScheduleManager::ScheduleManager(ApiClient *apiClient, QObject *parent)
     : QObject(parent), m_apiClient(apiClient), m_isSyncing(false)
 {
     initDatabase();
+
+    m_parserRunner = new ParserRunner(this);
+    setupParserConnections();
 }
 
 ScheduleManager::~ScheduleManager()
@@ -24,14 +28,17 @@ ScheduleManager::~ScheduleManager()
 void ScheduleManager::initDatabase()
 {
     m_db = QSqlDatabase::addDatabase("QSQLITE");
-    m_db.setDatabaseName("/Users/creech12/projects/C-DZ/Qt/Journey/db/schedule.db");
+    QString dbPath = QCoreApplication::applicationDirPath() + "/db/schedule.db";
+    m_db.setDatabaseName(dbPath);
+
+    qDebug() << "Путь к БД:" << dbPath;
 
     if (!m_db.open()) {
-        qWarning() << "❌ Ошибка открытия БД:" << m_db.lastError().text();
+        qWarning() << "Ошибка открытия БД:" << m_db.lastError().text();
         return;
     }
 
-    qDebug() << "✅ БД инициализирована";
+    qDebug() << "БД инициализирована";
 }
 
 void ScheduleManager::loadDaySchedule(const QDate &date)
@@ -41,14 +48,12 @@ void ScheduleManager::loadDaySchedule(const QDate &date)
     DaySchedule schedule;
     schedule.date = date;
 
-    // Сначала пытаемся загрузить из локальной БД
     loadDayFromDatabase(date, schedule);
 
     if (!schedule.isEmpty()) {
         emit dayScheduleLoaded(schedule);
     }
 
-    // Если есть интернет, обновляем с сервера
     if (hasInternetConnection()) {
         m_isSyncing = true;
         emit syncStarted();
@@ -145,21 +150,21 @@ void ScheduleManager::onScheduleDataReceived(const QJsonObject &json)
             query.addBindValue(lesson.lessonType);
 
             if (!query.exec()) {
-                qWarning() << "❌ Ошибка сохранения урока:" << query.lastError().text();
+                qWarning() << "Ошибка сохранения урока:" << query.lastError().text();
             }
         }
     }
 
     m_isSyncing = false;
     emit syncFinished();
-    qDebug() << "✅ Расписание синхронизировано";
+    qDebug() << "Расписание синхронизировано";
 }
 
 void ScheduleManager::onScheduleDataError(const QString &error)
 {
     m_isSyncing = false;
     emit syncFailed(error);
-    qWarning() << "❌ Ошибка синхронизации:" << error;
+    qWarning() << "Ошибка синхронизации:" << error;
 }
 
 void ScheduleManager::saveDayToDatabase(const DaySchedule &schedule)
@@ -177,7 +182,7 @@ void ScheduleManager::saveDayToDatabase(const DaySchedule &schedule)
         query.addBindValue(lesson.classroom);
 
         if (!query.exec()) {
-            qWarning() << "❌ Ошибка сохранения:" << query.lastError().text();
+            qWarning() << "Ошибка сохранения:" << query.lastError().text();
         }
     }
 }
@@ -189,7 +194,7 @@ void ScheduleManager::loadDayFromDatabase(QDate date, DaySchedule &schedule)
     query.addBindValue(date.toString("yyyy-MM-dd"));
 
     if (!query.exec()) {
-        qWarning() << "❌ Ошибка запроса:" << query.lastError().text();
+        qWarning() << "Ошибка запроса:" << query.lastError().text();
         return;
     }
 
@@ -222,4 +227,78 @@ WeekSchedule ScheduleManager::getWeekSchedule(const QDate &startDate) const
 QVector<DaySchedule> ScheduleManager::getMonthSchedule(const QDate &month) const
 {
     return QVector<DaySchedule>();
+}
+
+void ScheduleManager::setupParserConnections()
+{
+    connect(m_parserRunner, &ParserRunner::parserStarted, this, [this]() {
+        m_isSyncing = true;
+        emit syncStarted();
+    });
+
+    connect(m_parserRunner, &ParserRunner::parserFinished,
+            this, &ScheduleManager::onParserFinished);
+    connect(m_parserRunner, &ParserRunner::parserError,
+            this, &ScheduleManager::onParserError);
+    connect(m_parserRunner, &ParserRunner::parserProgress,
+            this, &ScheduleManager::onParserProgress);
+}
+
+void ScheduleManager::syncWithParser()
+{
+    // Пока заглушка
+    QString token = "";
+    QString dbPath = m_db.databaseName();
+
+    m_parserRunner->runParser(token, dbPath);
+}
+
+void ScheduleManager::cancelSync()
+{
+    if (m_parserRunner && m_parserRunner->isRunning()) {
+        m_parserRunner->cancelParser();
+    }
+}
+
+void ScheduleManager::onParserFinished(bool success, const QString &message)
+{
+    m_isSyncing = false;
+
+    if (success) {
+        emit syncFinished();
+        qDebug() << "Синхронизация через парсер завершена";
+
+        QDate today = QDate::currentDate();
+        loadDaySchedule(today);
+    } else {
+        emit syncFailed(message);
+    }
+}
+
+void ScheduleManager::onParserError(const QString &error)
+{
+    m_isSyncing = false;
+    emit syncFailed(error);
+}
+
+void ScheduleManager::onParserProgress(int percent)
+{
+    qDebug() << "Прогресс синхронизации:" << percent << "%";
+}
+
+void ScheduleManager::syncWithParser(const QString &jwtToken)
+{
+    if (m_isSyncing) {
+        qWarning() << "Синхронизация уже выполняется";
+        return;
+    }
+
+    if (!m_parserRunner) {
+        qWarning() << "ParserRunner не инициализирован!";
+        return;
+    }
+
+    QString dbPath = m_db.databaseName();
+
+    m_parserRunner->runParser(jwtToken, dbPath);
 }

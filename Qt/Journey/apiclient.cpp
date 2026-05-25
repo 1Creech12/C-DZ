@@ -61,7 +61,6 @@ void ApiClient::handleReply(QNetworkReply *reply,
             QByteArray responseData = reply->readAll();
             QString errorMsg;
 
-            // Пробуем извлечь сообщение об ошибке из ответа
             QJsonDocument doc = QJsonDocument::fromJson(responseData);
             if (doc.isObject() && doc.object().contains("message")) {
                 errorMsg = doc.object()["message"].toString();

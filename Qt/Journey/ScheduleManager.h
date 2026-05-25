@@ -5,6 +5,7 @@
 #include <QDate>
 #include <QSqlDatabase>
 #include "ScheduleModels.h"
+#include "parserrunner.h"
 
 class ApiClient;
 
@@ -31,6 +32,11 @@ public:
     bool isSyncing() const { return m_isSyncing; }
     bool hasInternetConnection() const;
 
+public slots:
+    void syncWithParser(const QString &jwtToken);
+    void syncWithParser();
+    void cancelSync();
+
 signals:
     void dayScheduleLoaded(const DaySchedule &schedule);
     void weekScheduleLoaded(const WeekSchedule &schedule);
@@ -42,6 +48,9 @@ signals:
 private slots:
     void onScheduleDataReceived(const QJsonObject &json);
     void onScheduleDataError(const QString &error);
+    void onParserFinished(bool success, const QString &message);
+    void onParserError(const QString &error);
+    void onParserProgress(int percent);
 
 private:
     ApiClient *m_apiClient;
@@ -51,6 +60,10 @@ private:
     void initDatabase();
     void saveDayToDatabase(const DaySchedule &schedule);
     void loadDayFromDatabase(QDate date, DaySchedule &schedule);
+    void runParser();
+
+    ParserRunner *m_parserRunner;
+    void setupParserConnections();
 };
 
 #endif // SCHEDULEMANAGER_H

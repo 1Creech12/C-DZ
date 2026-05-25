@@ -31,13 +31,14 @@ set(PROJECT_SOURCES
     ScheduleManager.h
     ScheduleWidget.cpp
     ScheduleWidget.h
+    parserrunner.cpp
+    parserrunner.h
 )
 
 # Основное приложение
 qt_add_executable(JournalTest
     MANUAL_FINALIZATION
     ${PROJECT_SOURCES}
-    ${PROJECT_RESOURCES}
 )
 
 # Линкуем все модули Qt
@@ -46,6 +47,14 @@ target_link_libraries(JournalTest PRIVATE
     Qt6::Widgets
     Qt6::Network
     Qt6::Sql
+)
+
+# Копируем Python-парсер в папку сборки
+add_custom_command(TARGET JournalTest POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/db
+    $<TARGET_FILE_DIR:JournalTest>/db
+    COMMENT "Копирование файлов парсера..."
 )
 
 # Тест авторизации
@@ -79,4 +88,11 @@ install(TARGETS JournalTest
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+# Установка Python-парсера
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/db/
+    DESTINATION db
+    FILES_MATCHING PATTERN "*.py"
+    PATTERN "*.db" EXCLUDE
 )

@@ -32,7 +32,6 @@ void ScheduleWidget::initUI()
     mainLayout->setContentsMargins(16, 16, 16, 16);
     mainLayout->setSpacing(12);
 
-    // ===== Header с датой и управлением =====
     QHBoxLayout *headerLayout = new QHBoxLayout();
     headerLayout->setSpacing(12);
 
@@ -51,20 +50,19 @@ void ScheduleWidget::initUI()
 
     headerLayout->addStretch();
 
-    m_syncStatusLabel = new QLabel("✓ Синхронизировано");
-    m_syncStatusLabel->setStyleSheet("color: #666; font-size: 12px;");
-    headerLayout->addWidget(m_syncStatusLabel);
+    //m_syncStatusLabel = new QLabel("✓ Синхронизировано");
+    //m_syncStatusLabel->setStyleSheet("color: #666; font-size: 12px;");
+    //headerLayout->addWidget(m_syncStatusLabel);
 
     mainLayout->addLayout(headerLayout);
 
-    // ===== Кнопки навигации =====
     QHBoxLayout *navLayout = new QHBoxLayout();
     navLayout->setSpacing(8);
 
     m_prevButton = new QPushButton("◀ Назад");
     m_nextButton = new QPushButton("Вперёд ▶");
     m_todayButton = new QPushButton("Сегодня");
-    m_syncButton = new QPushButton("⟳ Синхронизировать");
+    //m_syncButton = new QPushButton("⟳ Синхронизировать");
 
     connect(m_prevButton, &QPushButton::clicked, this, &ScheduleWidget::onPreviousDate);
     connect(m_nextButton, &QPushButton::clicked, this, &ScheduleWidget::onNextDate);
@@ -72,19 +70,18 @@ void ScheduleWidget::initUI()
         m_currentDate = QDate::currentDate();
         onDateSelected(m_currentDate);
     });
-    connect(m_syncButton, &QPushButton::clicked, [this]() {
-        m_scheduleManager->syncSchedule();
-    });
+    //connect(m_syncButton, &QPushButton::clicked, [this]() {
+    //    m_scheduleManager->syncSchedule();
+    //});
 
     navLayout->addWidget(m_prevButton);
     navLayout->addWidget(m_nextButton);
     navLayout->addWidget(m_todayButton);
     navLayout->addStretch();
-    navLayout->addWidget(m_syncButton);
+    //navLayout->addWidget(m_syncButton);
 
     mainLayout->addLayout(navLayout);
 
-    // ===== Список занятий =====
     m_lessonsListWidget = new QListWidget();
     m_lessonsListWidget->setStyleSheet(
         "QListWidget { border: 1px solid #e0e0e0; border-radius: 4px; }"
@@ -99,7 +96,6 @@ void ScheduleWidget::initUI()
 
 void ScheduleWidget::applyStyles()
 {
-    // Minimalist стиль
     setStyleSheet(
         "QWidget { background-color: #ffffff; color: #333; }"
         "QPushButton {"
@@ -267,14 +263,22 @@ void ScheduleWidget::onWeekScheduleLoaded(const WeekSchedule &schedule)
 
 void ScheduleWidget::onSyncStarted()
 {
-    m_syncStatusLabel->setText("⟳ Синхронизирование...");
-    m_syncStatusLabel->setStyleSheet("color: #ff9800; font-size: 12px;");
-    m_syncButton->setEnabled(false);
+    qDebug() << "Синхронизация началась...";
 }
 
 void ScheduleWidget::onSyncFinished()
 {
-    m_syncStatusLabel->setText("✓ Синхронизировано");
-    m_syncStatusLabel->setStyleSheet("color: #4caf50; font-size: 12px;");
-    m_syncButton->setEnabled(true);
+    qDebug() << "Синхронизация завершена, обнов вид...";
+
+    switch (m_currentMode) {
+    case DayView:
+        updateDayView(m_currentDate);
+        break;
+    case WeekView:
+        updateWeekView(m_currentDate);
+        break;
+    case MonthView:
+        updateMonthView(m_currentDate);
+        break;
+    }
 }

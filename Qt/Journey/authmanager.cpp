@@ -1,5 +1,5 @@
 #include "AuthManager.h"
-#include "ApiClient.h"  // Включаем здесь, а не в .h
+#include "ApiClient.h"
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QDebug>
@@ -27,7 +27,7 @@ void AuthManager::login(const QString &username, const QString &password)
                           processLoginResponse(response);
                       },
                       [this](QString error) {
-                          qDebug() << "❌ Ошибка входа:" << error;
+                          qDebug() << "Ошибка входа:" << error;
                           emit loginFailed("Ошибка входа: " + error);
                       }
                       );
@@ -40,7 +40,7 @@ void AuthManager::tryAutoLogin()
             m_apiClient->setAuthToken(m_authData.access_token);
             scheduleAutoRefresh();
             emit loginSuccess(m_authData);
-            qDebug() << "✅ Автовход успешен";
+            qDebug() << "Автовход успешен";
         } else if (!m_authData.refresh_token.isEmpty()) {
             refreshToken();
         }
@@ -67,7 +67,7 @@ void AuthManager::refreshToken()
                           processRefreshResponse(response);
                       },
                       [this](QString error) {
-                          qDebug() << "❌ Не удалось обновить токен:" << error;
+                          qDebug() << "Не удалось обновить токен:" << error;
                           emit loginFailed("Сессия истекла, войдите заново");
                           logout();
                       }
@@ -76,8 +76,7 @@ void AuthManager::refreshToken()
 
 void AuthManager::processLoginResponse(const QJsonObject &json)
 {
-    // Временный вывод всего ответа для отладки
-    qDebug() << "📦 ПОЛНЫЙ ОТВЕТ СЕРВЕРА:";
+    qDebug() << "Весь ответ сервера:";
     qDebug() << QJsonDocument(json).toJson(QJsonDocument::Indented);
 
     m_authData.access_token = json["access_token"].toString();
@@ -87,27 +86,24 @@ void AuthManager::processLoginResponse(const QJsonObject &json)
     m_authData.user_type = json["user_type"].toInt();
     m_authData.user_role = json["user_role"].toString();
 
-    QJsonObject city = json["city_data"].toObject();
-    m_authData.city_data.id_city = city["id_city"].toInt();
-    m_authData.city_data.name = city["name"].toString();
-    m_authData.city_data.prefix = city["prefix"].toString();
-    m_authData.city_data.timezone_name = city["timezone_name"].toString();
-    m_authData.city_data.country_code = city["country_code"].toString();
-    m_authData.city_data.translate_key = city["translate_key"].toString();
-    m_authData.city_data.market_status = city["market_status"].toInt();
-
     QJsonObject jwtPayload = decodeJwtPayload(m_authData.access_token);
     m_authData.user_id = jwtPayload["userId"].toInt();
 
-    // Извлекаем имя из JWT (если есть)
+    qDebug() << "🔍 Поиск имени:";
+    qDebug() << "  display_name из ответа:" << json["display_name"].toString();
+    qDebug() << "  name из JWT:" << jwtPayload["name"].toString();
+    qDebug() << "  first_name:" << json["first_name"].toString();
+    qDebug() << "  last_name:" << json["last_name"].toString();
+    qDebug() << "  username:" << json["username"].toString();
+    qDebug() << "  user_role:" << m_authData.user_role;
+    qDebug() << "  user_id:" << m_authData.user_id;
+
     m_authData.display_name = jwtPayload["name"].toString();
 
-    // Если в JWT нет имени, берём из ответа сервера
     if (m_authData.display_name.isEmpty()) {
         m_authData.display_name = json["display_name"].toString();
     }
 
-    // Если и в ответе нет — формируем из роли и ID
     if (m_authData.display_name.isEmpty()) {
         m_authData.display_name = QString("%1 #%2")
         .arg(m_authData.user_role)
@@ -118,9 +114,11 @@ void AuthManager::processLoginResponse(const QJsonObject &json)
     saveToSettings();
     scheduleAutoRefresh();
 
-    qDebug() << "✅ Вход выполнен. Пользователь ID:" << m_authData.user_id;
+    qDebug() << "   Вход выполнен. Пользователь ID:" << m_authData.user_id;
     qDebug() << "   Роль:" << m_authData.user_role;
     qDebug() << "   Город:" << m_authData.city_data.name;
+
+    fetchUserProfile();
 
     emit loginSuccess(m_authData);
 }
@@ -132,8 +130,45 @@ void AuthManager::processRefreshResponse(const QJsonObject &json)
     m_apiClient->setAuthToken(m_authData.access_token);
     saveToSettings();
     scheduleAutoRefresh();
-    qDebug() << "🔄 Токен обновлён";
+    qDebug() << "Токен обновлён";
     emit tokenRefreshed();
+}
+
+void AuthManager::fetchUserProfile()
+{
+    QStringList endpoints = {
+        "/auth/user",
+        "/profile",
+        "/auth/me",
+        "/user/profile"
+    };
+
+    for (const QString &endpoint : endpoints) {
+        m_apiClient->get(endpoint,
+                         [this, endpoint](QJsonObject response) {
+                             qDebug() << "Ответ от" << endpoint << ":" << QJsonDocument(response).toJson(QJsonDocument::Indented);
+
+                             QString firstName = response["first_name"].toString();
+                             if (firstName.isEmpty()) firstName = response["firstName"].toString();
+                             if (firstName.isEmpty()) firstName = response["name"].toString();
+
+                             QString lastName = response["last_name"].toString();
+                             if (lastName.isEmpty()) lastName = response["lastName"].toString();
+                             if (lastName.isEmpty()) lastName = response["surname"].toString();
+
+                             if (!firstName.isEmpty()) {
+                                 m_authData.display_name = firstName + " " + lastName;
+                                 m_authData.display_name = m_authData.display_name.trimmed();
+                                 saveToSettings();
+                                 qDebug() << "Имя найдено:" << m_authData.display_name;
+                                 emit loginSuccess(m_authData);
+                             }
+                         },
+                         [this, endpoint](QString error) {
+                             qDebug() << endpoint << "недоступен:" << error;
+                         }
+                         );
+    }
 }
 
 void AuthManager::saveToSettings()
@@ -178,7 +213,7 @@ void AuthManager::scheduleAutoRefresh()
 
     if (refreshIn > 0) {
         m_refreshTimer.start(refreshIn * 1000);
-        qDebug() << "⏰ Обновление токена через" << refreshIn / 60 << "минут";
+        qDebug() << "Обновление токена через" << refreshIn / 60 << "минут";
     } else {
         refreshToken();
     }
@@ -212,4 +247,46 @@ QString AuthManager::accessToken() const
 const AuthData& AuthManager::authData() const
 {
     return m_authData;
+}
+
+void AuthManager::saveCredentials(const QString &username, const QString &password)
+{
+    m_settings.setValue("credentials/username", username);
+    m_settings.setValue("credentials/password", password);
+    m_settings.setValue("credentials/remember", true);
+    m_settings.sync();
+    qDebug() << "Учетные данные сохранены для пользователя:" << username;
+}
+
+//bool AuthManager::hasSavedCredentials() const
+//{
+//    return m_settings.value("credentials/remember", false).toBool();
+//}
+
+void AuthManager::clearCredentials()
+{
+    m_settings.remove("credentials");
+    m_settings.sync();
+    qDebug() << "Учетные данные удалены";
+}
+
+QString AuthManager::getSavedUsername() const
+{
+    if (m_settings.value("credentials/remember", false).toBool()) {
+        return m_settings.value("credentials/username").toString();
+    }
+    return QString();
+}
+
+QString AuthManager::getSavedPassword() const
+{
+    if (m_settings.value("credentials/remember", false).toBool()) {
+        return m_settings.value("credentials/password").toString();
+    }
+    return QString();
+}
+
+QString AuthManager::getJwtToken() const
+{
+    return m_authData.access_token;
 }

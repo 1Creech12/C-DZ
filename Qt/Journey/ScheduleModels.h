@@ -13,7 +13,7 @@ struct Lesson {
     QString teacher;
     QTime startTime;
     QTime endTime;
-    QString lessonType; // лекция, практика, лабораторная и т.д.
+    QString lessonType;
 
     bool isValid() const {
         return !subject.isEmpty() && startTime.isValid() && endTime.isValid();

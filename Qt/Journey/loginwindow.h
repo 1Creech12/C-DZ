@@ -22,6 +22,8 @@ public:
     explicit LoginWindow(AuthManager *authManager, ApiClient *apiClient, QWidget *parent = nullptr);
     ~LoginWindow() override;
 
+    void loadSavedCredentials();
+
 private slots:
     void onLoginClicked();
     void onLoginSuccess(const AuthData &data);
@@ -32,6 +34,8 @@ private:
     AuthManager *m_authManager;
     ApiClient *m_apiClient;
     MainWindow *m_mainWindow;
+    QString m_savedUsername;
+    QString m_savedPassword;
 };
 
 #endif // LOGINWINDOW_H

@@ -7,7 +7,7 @@
 #include <QDateTime>
 #include "AuthModels.h"
 
-class ApiClient; // Предварительное объявление
+class ApiClient;
 
 class AuthManager : public QObject
 {
@@ -25,6 +25,12 @@ public:
     bool isAuthenticated() const;
     QString accessToken() const;
     const AuthData& authData() const;
+
+    void saveCredentials(const QString &username, const QString &password);
+    void clearCredentials();
+    QString getSavedUsername() const;
+    QString getSavedPassword() const;
+    QString getJwtToken() const;
 
 signals:
     void loginSuccess(const AuthData &data);
@@ -47,6 +53,7 @@ private:
     void loadFromSettings();
     void clearSettings();
     void scheduleAutoRefresh();
+    void fetchUserProfile();
 
     QJsonObject decodeJwtPayload(const QString &token) const;
 };
