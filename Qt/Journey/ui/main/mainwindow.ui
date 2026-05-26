@@ -274,14 +274,10 @@ QFrame#gemsBadge {
          </property>
         </widget>
        </item>
-
-        <item>
-            <widget class="QPushButton" name="syncButton">
-                <property name="text">
-                    <string>🔄 Синхронизировать</string>
-                </property>
-                <property name="styleSheet">
-                    <string notr="true">
+       <item>
+        <widget class="QPushButton" name="syncButton">
+         <property name="styleSheet">
+          <string notr="true">
                         QPushButton {
                             background-color: #4CAF50;
                             color: white;
@@ -297,10 +293,12 @@ QFrame#gemsBadge {
                             background-color: #3d8b40;
                         }
                     </string>
-                </property>
-            </widget>
-        </item>
-
+         </property>
+         <property name="text">
+          <string>🔄 Синхронизировать</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QPushButton" name="logoutButton">
          <property name="maximumSize">
@@ -335,7 +333,7 @@ QPushButton:hover {
     <item>
      <widget class="QTabWidget" name="mainTabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="homeTab">
        <attribute name="title">
@@ -859,52 +857,52 @@ QListWidget::item {
                    </property>
                    <item>
                     <property name="text">
-                     <string>🥇 Пидор А. — 2 450</string>
+                     <string>🥇 Петров А. — 2 450</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>🥈 Уебище М. — 2 180</string>
+                     <string>🥈 Петров М. — 2 180</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>🥉 Хуй с Горы. — 1 920</string>
+                     <string>▶ 🥉 Владислав — 1 250</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>4. Залупа Д. — 1 750</string>
+                     <string>4. Петров Д. — 1 750</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>5. АААААА Е. — 1 630</string>
+                     <string>5. Петров Е. — 1 630</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>6. Даун И. — 1 500</string>
+                     <string>6. Петров И. — 1 500</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>▶ 7. Васька — 1 250</string>
+                     <string>7. Петров П. — 1 920</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>8. Челик К. — 1 100</string>
+                     <string>8. Петров К. — 1 100</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>9. Соси Л. — 980</string>
+                     <string>9. Петров Л. — 980</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>10. Ебатьлох М. — 850</string>
+                     <string>10. Петров М. — 850</string>
                     </property>
                    </item>
                   </widget>
@@ -1037,17 +1035,42 @@ QListWidget::item {
                </property>
                <item>
                 <property name="text">
-                 <string>Хуй — 10.06.2026</string>
+                 <string>Обьектно-ориентированное программирования. Язык UML — 02.06.2026</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>На — 15.06.2026</string>
+                 <string>Платформа Microsoft .NET и язык программирования C# — 04.06.2026</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>Ебать — 20.06.2026</string>
+                 <string>История 2 курс — 05.06.2026</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Обьектно-ориентированное прграммирование с использованием языка C++ — 10.06.2026</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Основы разработки приложений с использование Windows Forms и WPF — 18.06.2026</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Разработка программных модулей — 22.06.2026</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Разработка мобильных приложений — 24.06.2026</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Поддержка и тестирование программных модулей — 26.06.2026</string>
                 </property>
                </item>
               </widget>
