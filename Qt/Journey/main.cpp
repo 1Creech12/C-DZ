@@ -1,7 +1,7 @@
 #include <QApplication>
-#include "ApiClient.h"
-#include "AuthManager.h"
-#include "LoginWindow.h"
+#include "core/auth/ApiClient.h"
+#include "core/auth/AuthManager.h"
+#include "ui/login/LoginWindow.h"
 
 int main(int argc, char *argv[])
 {

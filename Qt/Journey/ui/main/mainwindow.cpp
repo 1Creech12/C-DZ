@@ -1,10 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "ScheduleWidget.h"
-#include "ScheduleManager.h"
-#include "AuthManager.h"
-#include "AuthModels.h"
-#include "ApiClient.h"
+#include "../../core/schedule/ScheduleManager.h"
+#include "../../core/auth/authmanager.h"
+#include "../../core/auth/AuthModels.h"
+#include "../../core/auth/apiclient.h"
 #include <QVBoxLayout>
 #include <QDebug>
 #include <QMessageBox>

@@ -9,39 +9,51 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Ищем Qt6 с модулями Network и Sql
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets Network Sql)
 
-# Все исходники в одной папке
 set(PROJECT_SOURCES
     main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    mainwindow.ui
-    loginwindow.cpp
-    loginwindow.h
-    loginwindow.ui
-    apiclient.cpp
-    apiclient.h
-    authmanager.cpp
-    authmanager.h
-    AuthModels.h
-    ScheduleModels.h
-    ScheduleManager.cpp
-    ScheduleManager.h
-    ScheduleWidget.cpp
-    ScheduleWidget.h
-    parserrunner.cpp
-    parserrunner.h
+
+    # UI - Login
+    ui/login/loginwindow.cpp
+    ui/login/loginwindow.h
+    ui/login/loginwindow.ui
+
+    # UI - Main
+    ui/main/mainwindow.cpp
+    ui/main/mainwindow.h
+    ui/main/mainwindow.ui
+    ui/main/ScheduleWidget.cpp
+    ui/main/ScheduleWidget.h
+
+    # Core - Auth
+    core/auth/apiclient.cpp
+    core/auth/apiclient.h
+    core/auth/authmanager.cpp
+    core/auth/authmanager.h
+    core/auth/AuthModels.h
+
+    # Core - Schedule
+    core/schedule/ScheduleManager.cpp
+    core/schedule/ScheduleManager.h
+    core/schedule/ScheduleModels.h
+    core/schedule/parserrunner.cpp
+    core/schedule/ParserRunner.h
 )
 
-# Основное приложение
 qt_add_executable(JournalTest
     MANUAL_FINALIZATION
     ${PROJECT_SOURCES}
 )
 
-# Линкуем все модули Qt
+target_include_directories(JournalTest PRIVATE
+    ${CMAKE_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/ui/login
+    ${CMAKE_SOURCE_DIR}/ui/main
+    ${CMAKE_SOURCE_DIR}/core/auth
+    ${CMAKE_SOURCE_DIR}/core/schedule
+)
+
 target_link_libraries(JournalTest PRIVATE
     Qt6::Core
     Qt6::Widgets
@@ -49,28 +61,13 @@ target_link_libraries(JournalTest PRIVATE
     Qt6::Sql
 )
 
-# Копируем Python-парсер в папку сборки
 add_custom_command(TARGET JournalTest POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/db
+    ${CMAKE_SOURCE_DIR}/data/db
     $<TARGET_FILE_DIR:JournalTest>/db
-    COMMENT "Копирование файлов парсера..."
+    COMMENT "Копирование файлов базы данных..."
 )
 
-# Тест авторизации
-add_executable(test_auth
-    test_auth.cpp
-    apiclient.cpp
-    authmanager.cpp
-)
-
-target_link_libraries(test_auth PRIVATE
-    Qt6::Core
-    Qt6::Network
-    Qt6::Sql
-)
-
-# Свойства для macOS
 set_target_properties(JournalTest PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER com.topacademy.journaltest
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
@@ -79,7 +76,6 @@ set_target_properties(JournalTest PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-# Финализация Qt6
 qt_finalize_executable(JournalTest)
 
 # Установка
@@ -90,8 +86,8 @@ install(TARGETS JournalTest
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-# Установка Python-парсера
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/db/
+# Установка базы данных
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/data/db/
     DESTINATION db
     FILES_MATCHING PATTERN "*.py"
     PATTERN "*.db" EXCLUDE

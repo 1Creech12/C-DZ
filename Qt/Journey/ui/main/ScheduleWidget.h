@@ -8,7 +8,7 @@
 #include <QCalendarWidget>
 #include <QListWidget>
 #include <QDate>
-#include "ScheduleModels.h"
+#include "../../core/schedule/ScheduleModels.h"
 
 class ScheduleManager;
 

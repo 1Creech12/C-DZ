@@ -1,5 +1,5 @@
 #include "ScheduleWidget.h"
-#include "ScheduleManager.h"
+#include "../../core/schedule/ScheduleManager.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QListWidgetItem>

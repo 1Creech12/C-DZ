@@ -1,5 +1,5 @@
 #include "ScheduleManager.h"
-#include "ApiClient.h"
+#include "../auth/ApiClient.h"
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>

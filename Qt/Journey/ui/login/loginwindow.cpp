@@ -1,9 +1,9 @@
 #include "LoginWindow.h"
 #include "ui_loginwindow.h"
-#include "MainWindow.h"
-#include "ApiClient.h"
-#include "AuthManager.h"
-#include "AuthModels.h"
+#include "../main/MainWindow.h"
+#include "../../core/auth/apiclient.h"
+#include "../../core/auth/authmanager.h"
+#include "../../core/auth/AuthModels.h"
 #include <QMessageBox>
 
 LoginWindow::LoginWindow(AuthManager *authManager, ApiClient *apiClient, QWidget *parent)
