@@ -11,6 +11,11 @@ import calendar
 from datetime import datetime, timedelta
 import warnings
 import urllib3
+import sys
+import io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
 warnings.filterwarnings("ignore")
 urllib3.disable_warnings()
