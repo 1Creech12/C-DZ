@@ -1,0 +1,26 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="_1.MainWindow"
+        Title="_1">
+        <WrapPanel Margin="10" Orientation="Horizontal" MaxWidth="400">
+            <Button Content="Navy" Foreground="#000080" Margin="2"/>
+            <Button Content="Blue" Foreground="#0000FF" Margin="2"/>
+            <Button Content="Aqua" Foreground="#00FFFF" Margin="2"/>
+            <Button Content="Red" Foreground="#FF0000" Margin="2"/>
+            <Button Content="Red" Foreground="#FF0000" Margin="2"/>
+            <Button Content="Red" Foreground="#FF0000" Margin="2"/>
+            <Button Content="Red" Foreground="#FF0000" Margin="2"/>
+            <Button Content="Red" Foreground="#FF0000" Margin="2"/>
+            <Button Content="Red" Foreground="#FF0000" Margin="2"/>
+            <Button Content="Red" Foreground="#FF0000" Margin="2"/>
+            <Button Content="Red" Foreground="#FF0000" Margin="2"/>
+            <Button Content="Red" Foreground="#FF0000" Margin="2"/>
+            <Button Content="Red" Foreground="#FF0000" Margin="2"/>
+            <Button Content="Red" Foreground="#FF0000" Margin="2"/>
+            <Button Content="Red" Foreground="#FF0000" Margin="2"/>
+            <Button Content="Red" Foreground="#FF0000" Margin="2"/>
+        </WrapPanel>
+</Window>
