@@ -1,0 +1,11 @@
+/Users/creech12/projects/C-DZ/WPF/2/obj/Debug/net10.0/2.csproj.AssemblyReference.cache
+/Users/creech12/projects/C-DZ/WPF/2/obj/Debug/net10.0/Avalonia/Resources.Inputs.cache
+/Users/creech12/projects/C-DZ/WPF/2/obj/Debug/net10.0/2.dll
+/Users/creech12/projects/C-DZ/WPF/2/obj/Debug/net10.0/refint/2.dll
+/Users/creech12/projects/C-DZ/WPF/2/obj/Debug/net10.0/2.pdb
+/Users/creech12/projects/C-DZ/WPF/2/obj/Debug/net10.0/Avalonia/resources
+/Users/creech12/projects/C-DZ/WPF/2/obj/Debug/net10.0/2.GeneratedMSBuildEditorConfig.editorconfig
+/Users/creech12/projects/C-DZ/WPF/2/obj/Debug/net10.0/2.AssemblyInfoInputs.cache
+/Users/creech12/projects/C-DZ/WPF/2/obj/Debug/net10.0/2.AssemblyInfo.cs
+/Users/creech12/projects/C-DZ/WPF/2/obj/Debug/net10.0/2.csproj.CoreCompileInputs.cache
+/Users/creech12/projects/C-DZ/WPF/2/obj/Debug/net10.0/2.sourcelink.json

@@ -1,9 +1,27 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="_2.MainWindow"
-        Title="_2">
-    Welcome to Avalonia!
+        xmlns:vm="using:_2.ViewModels"
+        x:Class="_2.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Color Buttons"
+        Width="800"
+        Height="600">
+    <ScrollViewer>
+        <ItemsControl ItemsSource="{Binding Colors}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding Name}"
+                            Foreground="{Binding Foreground}"
+                            Margin="2"
+                            Width="200"
+                            Height="35"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
 </Window>
