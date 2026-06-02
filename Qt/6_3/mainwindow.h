@@ -16,9 +16,9 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_btnSwap_clicked();   // Кнопка "Поменять местами"
-    void on_btnBrowse1_clicked(); // Кнопка "Обзор" для первого файла
-    void on_btnBrowse2_clicked(); // Кнопка "Обзор" для второго файла
+    void on_btnSwap_clicked();
+    void on_btnBrowse1_clicked();
+    void on_btnBrowse2_clicked();
 
 private:
     Ui::MainWindow *ui;

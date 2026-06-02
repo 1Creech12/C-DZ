@@ -11,14 +11,14 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Обмен содержимым файлов (Вариант 6.3)</string>
+   <string>Обмен</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QGroupBox" name="groupBox1">
       <property name="title">
-       <string>Файл 1 (f1)</string>
+       <string>Файл 1</string>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout1">
        <item>
@@ -41,7 +41,7 @@
     <item>
      <widget class="QGroupBox" name="groupBox2">
       <property name="title">
-       <string>Файл 2 (f2)</string>
+       <string>Файл 2</string>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout2">
        <item>

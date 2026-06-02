@@ -57,11 +57,11 @@ void MainWindow::on_btnSwap_clicked()
     }
 
     QFileInfo infoF1(pathF1);
-    QString pathH = infoF1.absolutePath() + "/_temp_swap_h.txt";
+    QString pathH = infoF1.absolutePath() + "/temp.txt";
     QFile fileH(pathH);
 
     if (!fileF1.open(QIODevice::ReadOnly)) {
-        QMessageBox::warning(this, "Ошибка", "Не могу открыть файл 1 для чтения:\n" + pathF1);
+        QMessageBox::warning(this, "Ошибка", "Не открывается файл 1 для чтения:\n" + pathF1);
         return;
     }
     QTextStream inF1(&fileF1);
@@ -69,7 +69,7 @@ void MainWindow::on_btnSwap_clicked()
     fileF1.close();
 
     if (!fileH.open(QIODevice::WriteOnly)) {
-        QMessageBox::warning(this, "Ошибка", "Не могу создать временный файл:\n" + pathH);
+        QMessageBox::warning(this, "Ошибка", "Не открывается временный файл:\n" + pathH);
         return;
     }
     QTextStream outH(&fileH);
@@ -78,7 +78,7 @@ void MainWindow::on_btnSwap_clicked()
 
     // 2
     if (!fileF2.open(QIODevice::ReadOnly)) {
-        QMessageBox::warning(this, "Ошибка", "Не могу открыть файл 2 для чтения:\n" + pathF2);
+        QMessageBox::warning(this, "Ошибка", "Не открывается файл 2 для чтения:\n" + pathF2);
         return;
     }
     QTextStream inF2(&fileF2);
@@ -86,7 +86,7 @@ void MainWindow::on_btnSwap_clicked()
     fileF2.close();
 
     if (!fileF1.open(QIODevice::WriteOnly)) {
-        QMessageBox::warning(this, "Ошибка", "Не могу открыть файл 1 для записи:\n" + pathF1);
+        QMessageBox::warning(this, "Ошибка", "Не открывается файл 1 для записи:\n" + pathF1);
         return;
     }
     QTextStream outF1(&fileF1);
