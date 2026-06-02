@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>657</width>
+    <height>445</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Обмен содержимым файлов (Вариант 6.3)</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QGroupBox" name="groupBox1">
+      <property name="title">
+       <string>Файл 1 (f1)</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout1">
+       <item>
+        <widget class="QLineEdit" name="lineEditFile1">
+         <property name="placeholderText">
+          <string>Путь к первому файлу...</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnBrowse1">
+         <property name="text">
+          <string>Обзор...</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox2">
+      <property name="title">
+       <string>Файл 2 (f2)</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout2">
+       <item>
+        <widget class="QLineEdit" name="lineEditFile2">
+         <property name="placeholderText">
+          <string>Путь ко второму файлу...</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnBrowse2">
+         <property name="text">
+          <string>Обзор...</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="btnSwap">
+      <property name="styleSheet">
+       <string notr="true">font-size: 12pt;</string>
+      </property>
+      <property name="text">
+       <string>Поменять содержимое файлов местами</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Orientation::Horizontal</enum>
+      </property>
+      <widget class="QGroupBox" name="groupBoxContent1">
+       <property name="title">
+        <string>Содержимое файла 1</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayoutContent1">
+        <item>
+         <widget class="QTextEdit" name="textEditContent1">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="placeholderText">
+           <string>Здесь отобразится содержимое f1...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QGroupBox" name="groupBoxContent2">
+       <property name="title">
+        <string>Содержимое файла 2</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayoutContent2">
+        <item>
+         <widget class="QTextEdit" name="textEditContent2">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="placeholderText">
+           <string>Здесь отобразится содержимое f2...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
