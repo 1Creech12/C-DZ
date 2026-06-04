@@ -16,16 +16,21 @@ namespace DictionaryApp
         {
             _loadedDictionaries = new Dictionary<string, DictionaryManager>();
             
-            // Папку для словарей если её нет
             if (!Directory.Exists(_dictionariesFolder))
                 Directory.CreateDirectory(_dictionariesFolder);
         }
 
         // Создание нового словаря
-        public void CreateDictionary(string dictionaryName)
+        public void CreateDictionary(string dictionaryName, string dictionaryType)
         {
             dictionaryName = dictionaryName.ToLower();
-            
+
+            if (string.IsNullOrWhiteSpace(dictionaryName))
+            {
+                Console.WriteLine("Имя словаря не может быть пустым.");
+                return;
+            }
+
             if (_loadedDictionaries.ContainsKey(dictionaryName))
             {
                 Console.WriteLine("Словарь с таким именем уже существует.");
@@ -41,9 +46,10 @@ namespace DictionaryApp
                 return;
             }
 
-            var newDict = new DictionaryManager(dictionaryName, _dictionariesFolder);
+            var newDict = new DictionaryManager(dictionaryName, _dictionariesFolder, dictionaryType);
             _loadedDictionaries.Add(dictionaryName, newDict);
-            Console.WriteLine($"Словарь '{dictionaryName}' успешно создан.");
+            newDict.SaveToFile();
+            Console.WriteLine($"Словарь '{dictionaryName}' ({dictionaryType}) успешно создан.");
         }
 
         // Получение словаря по имени
@@ -88,21 +94,49 @@ namespace DictionaryApp
     public class DictionaryManager
     {
         private string _name;
+        private string _type;
         private string _filePath;
         private Dictionary<string, List<string>> _words;
 
-        public DictionaryManager(string name, string folderPath)
+        public DictionaryManager(string name, string folderPath, string type = "")
         {
             _name = name.ToLower();
+            _type = type;
             _filePath = Path.Combine(folderPath, $"{_name}.json");
             LoadFromFile();
+        }
+
+        public string? GetDictionaryType() => _type;
+
+        public void SaveToFile()
+        {
+            try
+            {
+                var data = new
+                {
+                    Type = _type,
+                    Words = _words
+                };
+                string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+                File.WriteAllText(_filePath, json);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка при сохранении: {ex.Message}");
+            }
         }
 
         // Добавление слова и его переводов
         public void AddWord(string word, List<string> translations)
         {
+            if (string.IsNullOrWhiteSpace(word) || translations.Count == 0)
+            {
+                Console.WriteLine("Ошибка: слово и переводы не могут быть пустыми.");
+                return;
+            }
+
             word = word.ToLower().Trim();
-            
+
             if (!_words.ContainsKey(word))
             {
                 _words[word] = new List<string>();
@@ -116,7 +150,7 @@ namespace DictionaryApp
                     _words[word].Add(cleanTranslation);
                 }
             }
-            
+
             SaveToFile();
             Console.WriteLine($"Слово '{word}' успешно добавлено/обновлено.");
         }
@@ -294,24 +328,27 @@ namespace DictionaryApp
             }
         }
 
-        // Сохранение в JSON
-        private void SaveToFile()
-        {
-            string json = JsonConvert.SerializeObject(_words, Formatting.Indented);
-            File.WriteAllText(_filePath, json);
-        }
-
         // Загрузка из JSON
         private void LoadFromFile()
         {
-            if (File.Exists(_filePath))
+            try
             {
-                string json = File.ReadAllText(_filePath);
-                _words = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(json) 
-                         ?? new Dictionary<string, List<string>>();
+                if (File.Exists(_filePath))
+                {
+                    string json = File.ReadAllText(_filePath);
+                    var data = JsonConvert.DeserializeObject<dynamic>(json);
+                    _type = data.Type ?? "";
+                    _words = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(data.Words.ToString())
+                             ?? new Dictionary<string, List<string>>();
+                }
+                else
+                {
+                    _words = new Dictionary<string, List<string>>();
+                }
             }
-            else
+            catch (Exception ex)
             {
+                Console.WriteLine($"Ошибка при загрузке: {ex.Message}");
                 _words = new Dictionary<string, List<string>>();
             }
         }
@@ -389,11 +426,18 @@ namespace DictionaryApp
         static void CreateDictionaryMenu()
         {
             Console.Clear();
-            Console.Write("Введите тип словаря (англо-русский): ");
+            Console.Write("Введите имя словаря: ");
             string name = Console.ReadLine();
+            Console.Write("Введите тип словаря (например, англо-русский): ");
+            string type = Console.ReadLine();
+
             if (!string.IsNullOrWhiteSpace(name))
             {
-                appManager.CreateDictionary(name);
+                appManager.CreateDictionary(name, type);
+            }
+            else
+            {
+                Console.WriteLine("Имя словаря не может быть пустым.");
             }
             Console.ReadKey();
         }
@@ -404,7 +448,8 @@ namespace DictionaryApp
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine($"Словарь '{currentDictionaryName}'");
+                string? typeInfo = !string.IsNullOrEmpty(currentDict?.GetDictionaryType()) ? $" ({currentDict?.GetDictionaryType()})" : "";
+                Console.WriteLine($"Словарь: '{currentDictionaryName}'{typeInfo}");
                 Console.WriteLine("1. Показать все слова");
                 Console.WriteLine("2. Добавить слово / перевод");
                 Console.WriteLine("3. Заменить слово");
@@ -416,7 +461,7 @@ namespace DictionaryApp
                 Console.WriteLine("0. Возврат в главное меню");
                 Console.Write("Ваш выбор: ");
 
-                string choice = Console.ReadLine();
+                string? choice = Console.ReadLine();
 
                 switch (choice)
                 {
@@ -439,10 +484,29 @@ namespace DictionaryApp
         {
             Console.Write("Введите слово: ");
             string word = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(word))
+            {
+                Console.WriteLine("Слово не может быть пустым.");
+                Console.ReadKey();
+                return;
+            }
+
             Console.Write("Введите переводы через запятую: ");
             string input = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                Console.WriteLine("Переводы не могут быть пустыми.");
+                Console.ReadKey();
+                return;
+            }
+
             var translations = input.Split(',').Select(t => t.Trim()).Where(t => t != "").ToList();
-            if (translations.Count > 0) currentDict.AddWord(word, translations);
+            if (translations.Count > 0)
+                currentDict.AddWord(word, translations);
+            else
+                Console.WriteLine("Ошибка: нет валидных переводов.");
             Console.ReadKey();
         }
 
@@ -450,8 +514,24 @@ namespace DictionaryApp
         {
             Console.Write("Старое слово: ");
             string oldW = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(oldW))
+            {
+                Console.WriteLine("Слово не может быть пустым.");
+                Console.ReadKey();
+                return;
+            }
+
             Console.Write("Новое слово: ");
             string newW = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(newW))
+            {
+                Console.WriteLine("Новое слово не может быть пустым.");
+                Console.ReadKey();
+                return;
+            }
+
             currentDict.ReplaceWord(oldW, newW);
             Console.ReadKey();
         }
@@ -460,10 +540,34 @@ namespace DictionaryApp
         {
             Console.Write("Слово: ");
             string w = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(w))
+            {
+                Console.WriteLine("Слово не может быть пустым.");
+                Console.ReadKey();
+                return;
+            }
+
             Console.Write("Старый перевод: ");
             string oldT = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(oldT))
+            {
+                Console.WriteLine("Старый перевод не может быть пустым.");
+                Console.ReadKey();
+                return;
+            }
+
             Console.Write("Новый перевод: ");
             string newT = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(newT))
+            {
+                Console.WriteLine("Новый перевод не может быть пустым.");
+                Console.ReadKey();
+                return;
+            }
+
             currentDict.ReplaceTranslation(w, oldT, newT);
             Console.ReadKey();
         }
@@ -471,7 +575,16 @@ namespace DictionaryApp
         static void DeleteWordMenu()
         {
             Console.Write("Слово для удаления: ");
-            currentDict.DeleteWord(Console.ReadLine());
+            string word = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(word))
+            {
+                Console.WriteLine("Слово не может быть пустым.");
+                Console.ReadKey();
+                return;
+            }
+
+            currentDict.DeleteWord(word);
             Console.ReadKey();
         }
 
@@ -479,22 +592,57 @@ namespace DictionaryApp
         {
             Console.Write("Слово: ");
             string w = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(w))
+            {
+                Console.WriteLine("Слово не может быть пустым.");
+                Console.ReadKey();
+                return;
+            }
+
             Console.Write("Перевод для удаления: ");
-            currentDict.DeleteTranslation(w, Console.ReadLine());
+            string t = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(t))
+            {
+                Console.WriteLine("Перевод не может быть пустым.");
+                Console.ReadKey();
+                return;
+            }
+
+            currentDict.DeleteTranslation(w, t);
             Console.ReadKey();
         }
 
         static void SearchWordMenu()
         {
             Console.Write("Слово для поиска: ");
-            currentDict.SearchWord(Console.ReadLine());
+            string word = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(word))
+            {
+                Console.WriteLine("Слово не может быть пустым.");
+                Console.ReadKey();
+                return;
+            }
+
+            currentDict.SearchWord(word);
             Console.ReadKey();
         }
 
         static void ExportWordMenu()
         {
             Console.Write("Слово для экспорта: ");
-            currentDict.ExportWord(Console.ReadLine());
+            string word = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(word))
+            {
+                Console.WriteLine("Слово не может быть пустым.");
+                Console.ReadKey();
+                return;
+            }
+
+            currentDict.ExportWord(word);
             Console.ReadKey();
         }
     }
