@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>700</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Блокнот</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QTextEdit" name="textEdit"/>
+    </item>
+   </layout>
+  </widget>
+
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>700</width>
+     <height>21</height>
+    </rect>
+   </property>
+
+   <!-- Меню "Файл" -->
+   <widget class="QMenu" name="menu_File">
+    <property name="title"><string>Файл</string></property>
+    <addaction name="action_New"/>
+    <addaction name="action_Open"/>
+    <addaction name="action_Save"/>
+    <addaction name="action_SaveAs"/>
+    <addaction name="separator"/>
+    <addaction name="action_Print"/>
+    <addaction name="separator"/>
+    <addaction name="action_Exit"/>
+   </widget>
+
+   <!-- Меню "Правка" -->
+   <widget class="QMenu" name="menu_Edit">
+    <property name="title"><string>Правка</string></property>
+    <addaction name="action_Undo"/>
+    <addaction name="action_Redo"/>
+    <addaction name="separator"/>
+    <addaction name="action_Copy"/>
+    <addaction name="action_Cut"/>
+    <addaction name="action_Paste"/>
+    <addaction name="action_Delete"/>
+    <addaction name="separator"/>
+    <addaction name="action_Date"/>
+   </widget>
+
+   <!-- Меню "Вид" -->
+   <widget class="QMenu" name="menu_View">
+    <property name="title"><string>Вид</string></property>
+    <addaction name="action_Font"/>
+    <addaction name="menu_Align"/>
+   </widget>
+   <widget class="QMenu" name="menu_Align">
+    <property name="title"><string>Выравнивание</string></property>
+    <addaction name="action_Left"/>
+    <addaction name="action_Center"/>
+    <addaction name="action_Right"/>
+   </widget>
+
+   <!-- Меню "Найти" -->
+   <widget class="QMenu" name="menu_Search">
+    <property name="title"><string>Найти</string></property>
+    <addaction name="action_Search"/>
+    <addaction name="action_Replace"/>
+    <addaction name="action_GoToLine"/>
+   </widget>
+
+   <!-- Меню "Справка" -->
+   <widget class="QMenu" name="menu_Help">
+    <property name="title"><string>Справка</string></property>
+    <addaction name="action_About"/>
+   </widget>
+
+   <addaction name="menu_File"/>
+   <addaction name="menu_Edit"/>
+   <addaction name="menu_View"/>
+   <addaction name="menu_Search"/>
+   <addaction name="menu_Help"/>
+  </widget>
+
+  <!-- ====== Actions ====== -->
+  <action name="action_New">
+   <property name="text"><string>Новый</string></property>
+   <property name="shortcut"><string>Ctrl+N</string></property>
+  </action>
+  <action name="action_Open">
+   <property name="text"><string>Открыть</string></property>
+   <property name="shortcut"><string>Ctrl+O</string></property>
+  </action>
+  <action name="action_Save">
+   <property name="text"><string>Сохранить</string></property>
+   <property name="shortcut"><string>Ctrl+S</string></property>
+  </action>
+  <action name="action_SaveAs">
+   <property name="text"><string>Сохранить как</string></property>
+   <property name="shortcut"><string>Ctrl+Shift+S</string></property>
+  </action>
+  <action name="action_Print">
+   <property name="text"><string>Печать</string></property>
+   <property name="shortcut"><string>Ctrl+P</string></property>
+  </action>
+  <action name="action_Exit">
+   <property name="text"><string>Выход</string></property>
+   <property name="shortcut"><string>Alt+F4</string></property>
+  </action>
+
+  <action name="action_Undo">
+   <property name="text"><string>Отменить</string></property>
+   <property name="shortcut"><string>Ctrl+Z</string></property>
+  </action>
+  <action name="action_Redo">
+   <property name="text"><string>Повторить</string></property>
+   <property name="shortcut"><string>Ctrl+Y</string></property>
+  </action>
+  <action name="action_Copy">
+   <property name="text"><string>Копировать</string></property>
+   <property name="shortcut"><string>Ctrl+C</string></property>
+  </action>
+  <action name="action_Cut">
+   <property name="text"><string>Вырезать</string></property>
+   <property name="shortcut"><string>Ctrl+X</string></property>
+  </action>
+  <action name="action_Paste">
+   <property name="text"><string>Вставить</string></property>
+   <property name="shortcut"><string>Ctrl+V</string></property>
+  </action>
+  <action name="action_Delete">
+   <property name="text"><string>Удалить</string></property>
+   <property name="shortcut"><string>Del</string></property>
+  </action>
+  <action name="action_Date">
+   <property name="text"><string>Вставить дату</string></property>
+   <property name="shortcut"><string>F5</string></property>
+  </action>
+
+  <action name="action_Font">
+   <property name="text"><string>Шрифт</string></property>
+  </action>
+  <action name="action_Left">
+   <property name="text"><string>Слева</string></property>
+  </action>
+  <action name="action_Center">
+   <property name="text"><string>По центру</string></property>
+  </action>
+  <action name="action_Right">
+   <property name="text"><string>Справа</string></property>
+  </action>
+
+  <action name="action_Search">
+   <property name="text"><string>Поиск</string></property>
+   <property name="shortcut"><string>Ctrl+F</string></property>
+  </action>
+  <action name="action_Replace">
+   <property name="text"><string>Заменить</string></property>
+   <property name="shortcut"><string>Ctrl+H</string></property>
+  </action>
+  <action name="action_GoToLine">
+   <property name="text"><string>Перейти к строке...</string></property>
+   <property name="shortcut"><string>Ctrl+G</string></property>
+  </action>
+
+  <action name="action_About">
+   <property name="text"><string>О программе</string></property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
