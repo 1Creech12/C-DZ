@@ -32,9 +32,15 @@ public:
     bool isSyncing() const { return m_isSyncing; }
     bool hasInternetConnection() const;
 
+    int homeworkAll() const;
+    int homeworkDone() const;
+    int homeworkOverdue() const;
+    int homeworkUnderInspection() const;
+    int homeworkCurrent() const;
+
 public slots:
     void syncWithParser(const QString &jwtToken);
-    void syncWithParser();
+    // void syncWithParser();
     void cancelSync();
 
 signals:
@@ -44,6 +50,7 @@ signals:
     void syncStarted();
     void syncFinished();
     void syncFailed(const QString &error);
+    void homeworkUpdated();
 
 private slots:
     void onScheduleDataReceived(const QJsonObject &json);
@@ -51,6 +58,7 @@ private slots:
     void onParserFinished(bool success, const QString &message);
     void onParserError(const QString &error);
     void onParserProgress(int percent);
+    void onHomeworkParserFinished(bool success, const QString &message);
 
 private:
     ApiClient *m_apiClient;
@@ -64,6 +72,19 @@ private:
 
     ParserRunner *m_parserRunner;
     void setupParserConnections();
+
+    ParserRunner *m_homeworkRunner;
+    void setupHomeworkParserConnections();
+    void startHomeworkSync();
+    void loadHomeworkFromDb();
+
+    int m_homeworkAll = 0;
+    int m_homeworkDone = 0;
+    int m_homeworkOverdue = 0;
+    int m_homeworkUnderInspection = 0;
+    int m_homeworkCurrent = 0;
+
+    QString m_pendingJwtToken;
 };
 
 #endif // SCHEDULEMANAGER_H

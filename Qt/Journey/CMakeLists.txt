@@ -44,6 +44,7 @@ set(PROJECT_SOURCES
 qt_add_executable(JournalTest
     MANUAL_FINALIZATION
     ${PROJECT_SOURCES}
+    data/db/parser_homework.py
 )
 
 target_include_directories(JournalTest PRIVATE

@@ -2,15 +2,12 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
-#include <QJsonDocument>
-#include <QJsonObject>
 
 ParserRunner::ParserRunner(QObject *parent)
     : QObject(parent)
     , m_process(nullptr)
 {
     findPython();
-    findParserScript();
 }
 
 ParserRunner::~ParserRunner()
@@ -41,31 +38,18 @@ bool ParserRunner::findPython()
     return false;
 }
 
-bool ParserRunner::findParserScript()
-{
-    QStringList searchPaths = {
-        QCoreApplication::applicationDirPath() + "/db/parser_main.py",
-        QCoreApplication::applicationDirPath() + "/../db/parser_main.py",
-        QDir::currentPath() + "/db/parser_main.py"
-    };
-
-    for (const QString &path : searchPaths) {
-        if (QFileInfo::exists(path)) {
-            m_parserScriptPath = QFileInfo(path).absoluteFilePath();
-            return true;
-        }
-    }
-
-    qWarning() << "Скрипт парсера не найден!";
-    m_parserScriptPath = QDir::currentPath() + "/db/parser_main.py";
-    return false;
-}
-
-void ParserRunner::runParser(const QString &jwtToken, const QString &dbPath,
+void ParserRunner::runParser(const QString &scriptPath, const QString &jwtToken,
+                             const QString &dbPath,
                              const QDate &startDate, const QDate &endDate)
 {
     if (m_process && m_process->state() != QProcess::NotRunning) {
         emit parserError("Парсер уже запущен");
+        return;
+    }
+
+    // Проверяем существование скрипта
+    if (!QFileInfo::exists(scriptPath)) {
+        emit parserError("Скрипт парсера не найден: " + scriptPath);
         return;
     }
 
@@ -82,7 +66,7 @@ void ParserRunner::runParser(const QString &jwtToken, const QString &dbPath,
     }
 
     QStringList args;
-    args << m_parserScriptPath;
+    args << scriptPath;
     args << "--token" << jwtToken;
     args << "--db" << dbPath;
 
@@ -102,7 +86,7 @@ void ParserRunner::runParser(const QString &jwtToken, const QString &dbPath,
 
     if (m_process->waitForStarted(5000)) {
         emit parserStarted();
-        qDebug() << "Парсер запущен";
+        qDebug() << "Парсер запущен:" << scriptPath;
     } else {
         emit parserError("Не удалось запустить парсер: " + m_process->errorString());
     }

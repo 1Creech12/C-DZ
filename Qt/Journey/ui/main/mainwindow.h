@@ -25,6 +25,7 @@ public:
 private slots:
     void onLogout();
     void onSyncClicked();
+    void updateHomeworkLabels();
 
 private:
     void applyStyles();

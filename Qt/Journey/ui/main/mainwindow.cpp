@@ -20,6 +20,10 @@ MainWindow::MainWindow(AuthManager *authManager, ApiClient *apiClient, QWidget *
 
     m_scheduleManager = new ScheduleManager(apiClient, this);
 
+    connect(m_scheduleManager, &ScheduleManager::homeworkUpdated,
+            this, &MainWindow::updateHomeworkLabels);
+    updateHomeworkLabels();
+
     m_scheduleWidget = new ScheduleWidget(m_scheduleManager, this);
     ui->scheduleTab->layout()->addWidget(m_scheduleWidget);
 
@@ -89,4 +93,18 @@ void MainWindow::onSyncClicked()
     }
 
     m_scheduleManager->syncWithParser(jwtToken);
+}
+
+void MainWindow::updateHomeworkLabels()
+{
+    ui->homeworkTotalLabel->setText(
+        QString("Всего: %1").arg(m_scheduleManager->homeworkAll()));
+    ui->homeworkDoneLabel->setText(
+        QString("Сдано: %1").arg(m_scheduleManager->homeworkDone()));
+    ui->homeworkPendingLabel->setText(
+        QString("На проверке: %1").arg(m_scheduleManager->homeworkUnderInspection()));
+    ui->homeworkOverdueLabel->setText(
+        QString("Просрочено: %1").arg(m_scheduleManager->homeworkOverdue()));
+    ui->homeworkCurrentLabel->setText(
+        QString("Текущие: %1 задания").arg(m_scheduleManager->homeworkCurrent()));
 }

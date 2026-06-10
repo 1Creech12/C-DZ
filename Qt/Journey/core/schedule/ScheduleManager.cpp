@@ -8,14 +8,24 @@
 #include <QDebug>
 #include <QNetworkAccessManager>
 #include <QCoreApplication>
+#include <QDir>
+#include <QFileInfo>
 
 ScheduleManager::ScheduleManager(ApiClient *apiClient, QObject *parent)
     : QObject(parent), m_apiClient(apiClient), m_isSyncing(false)
 {
     initDatabase();
 
+    // Парсер расписания
     m_parserRunner = new ParserRunner(this);
     setupParserConnections();
+
+    // Парсер домашних заданий
+    m_homeworkRunner = new ParserRunner(this);
+    setupHomeworkParserConnections();
+
+    // Загружаем ДЗ при старте
+    loadHomeworkFromDb();
 }
 
 ScheduleManager::~ScheduleManager()
@@ -60,8 +70,8 @@ void ScheduleManager::loadDaySchedule(const QDate &date)
 
         QString dateStr = date.toString("yyyy-MM-dd");
         m_apiClient->get("/schedule/day/" + dateStr,
-                        [this](QJsonObject response) { onScheduleDataReceived(response); },
-                        [this](QString error) { onScheduleDataError(error); });
+                         [this](QJsonObject response) { onScheduleDataReceived(response); },
+                         [this](QString error) { onScheduleDataError(error); });
     }
 }
 
@@ -117,8 +127,8 @@ void ScheduleManager::refreshFromServer()
     QString dateStr = today.toString("yyyy-MM-dd");
 
     m_apiClient->get("/schedule/week/" + dateStr,
-                    [this](QJsonObject response) { onScheduleDataReceived(response); },
-                    [this](QString error) { onScheduleDataError(error); });
+                     [this](QJsonObject response) { onScheduleDataReceived(response); },
+                     [this](QString error) { onScheduleDataError(error); });
 }
 
 bool ScheduleManager::hasInternetConnection() const
@@ -139,8 +149,8 @@ void ScheduleManager::onScheduleDataReceived(const QJsonObject &json)
             QString dateStr = lessonObj["date"].toString();
 
             query.prepare("INSERT OR REPLACE INTO lessons "
-                         "(date, subject, classroom, teacher, start_time, end_time, type) "
-                         "VALUES (?, ?, ?, ?, ?, ?, ?)");
+                          "(date, subject, classroom, teacher, start_time, end_time, type) "
+                          "VALUES (?, ?, ?, ?, ?, ?, ?)");
             query.addBindValue(dateStr);
             query.addBindValue(lesson.subject);
             query.addBindValue(lesson.classroom);
@@ -173,7 +183,7 @@ void ScheduleManager::saveDayToDatabase(const DaySchedule &schedule)
 
     for (const Lesson &lesson : schedule.lessons) {
         query.prepare("INSERT OR IGNORE INTO lessons (date, lesson, started_at, finished_at, teacher_name, subject_name, room_name) "
-                     "VALUES (?, 1, ?, ?, ?, ?, ?)");
+                      "VALUES (?, 1, ?, ?, ?, ?, ?)");
         query.addBindValue(schedule.date.toString("yyyy-MM-dd"));
         query.addBindValue(lesson.startTime.toString("HH:mm"));
         query.addBindValue(lesson.endTime.toString("HH:mm"));
@@ -229,6 +239,8 @@ QVector<DaySchedule> ScheduleManager::getMonthSchedule(const QDate &month) const
     return QVector<DaySchedule>();
 }
 
+// ─── Парсер расписания ─────────────────────────────────────────────
+
 void ScheduleManager::setupParserConnections()
 {
     connect(m_parserRunner, &ParserRunner::parserStarted, this, [this]() {
@@ -244,13 +256,50 @@ void ScheduleManager::setupParserConnections()
             this, &ScheduleManager::onParserProgress);
 }
 
-void ScheduleManager::syncWithParser()
+void ScheduleManager::syncWithParser(const QString &jwtToken)
 {
-    // Пока заглушка
-    QString token = "";
+    if (m_isSyncing) {
+        qWarning() << "Синхронизация уже выполняется";
+        return;
+    }
+
+    if (!m_parserRunner) {
+        qWarning() << "ParserRunner не инициализирован!";
+        return;
+    }
+
+    m_pendingJwtToken = jwtToken;
+    m_isSyncing = true;
+    emit syncStarted();
+
     QString dbPath = m_db.databaseName();
 
-    m_parserRunner->runParser(token, dbPath);
+    // Ищем parser_main.py
+    QStringList searchPaths = {
+        QCoreApplication::applicationDirPath() + "/db/parser_main.py",
+        QCoreApplication::applicationDirPath() + "/../db/parser_main.py",
+        QCoreApplication::applicationDirPath() + "/../../data/db/parser_main.py",
+        QDir::currentPath() + "/data/db/parser_main.py"
+    };
+
+    QString scriptPath;
+    for (const QString &path : searchPaths) {
+        if (QFileInfo::exists(path)) {
+            scriptPath = QFileInfo(path).absoluteFilePath();
+            break;
+        }
+    }
+
+    m_parserRunner->runParser(scriptPath, jwtToken, dbPath);
+
+    if (scriptPath.isEmpty()) {
+        m_isSyncing = false;
+        emit syncFailed("Скрипт parser_main.py не найден");
+        return;
+    }
+
+    qDebug() << "🔄 Запуск парсера расписания:" << scriptPath;
+
 }
 
 void ScheduleManager::cancelSync()
@@ -258,19 +307,26 @@ void ScheduleManager::cancelSync()
     if (m_parserRunner && m_parserRunner->isRunning()) {
         m_parserRunner->cancelParser();
     }
+    if (m_homeworkRunner && m_homeworkRunner->isRunning()) {
+        m_homeworkRunner->cancelParser();
+    }
+    m_isSyncing = false;
 }
 
 void ScheduleManager::onParserFinished(bool success, const QString &message)
 {
-    m_isSyncing = false;
+    // Запускаем парсер ДЗ, флаг m_isSyncing остаётся true
+    startHomeworkSync();
 
     if (success) {
-        emit syncFinished();
-        qDebug() << "Синхронизация через парсер завершена";
+        qDebug() << "✅ Парсер расписания завершён:" << message;
 
         QDate today = QDate::currentDate();
         loadDaySchedule(today);
+
+
     } else {
+        m_isSyncing = false;
         emit syncFailed(message);
     }
 }
@@ -286,19 +342,117 @@ void ScheduleManager::onParserProgress(int percent)
     qDebug() << "Прогресс синхронизации:" << percent << "%";
 }
 
-void ScheduleManager::syncWithParser(const QString &jwtToken)
+// ─── Парсер домашних заданий ───────────────────────────────────────
+
+void ScheduleManager::setupHomeworkParserConnections()
 {
-    if (m_isSyncing) {
-        qWarning() << "Синхронизация уже выполняется";
-        return;
-    }
-
-    if (!m_parserRunner) {
-        qWarning() << "ParserRunner не инициализирован!";
-        return;
-    }
-
-    QString dbPath = m_db.databaseName();
-
-    m_parserRunner->runParser(jwtToken, dbPath);
+    connect(m_homeworkRunner, &ParserRunner::parserFinished,
+            this, &ScheduleManager::onHomeworkParserFinished);
+    connect(m_homeworkRunner, &ParserRunner::parserError, this, [this](const QString &error) {
+        qWarning() << "Ошибка парсера ДЗ:" << error;
+    });
 }
+
+void ScheduleManager::startHomeworkSync()
+{
+    QStringList searchPaths = {
+        QCoreApplication::applicationDirPath() + "/db/parser_homework.py",
+        QCoreApplication::applicationDirPath() + "/../db/parser_homework.py",
+        QCoreApplication::applicationDirPath() + "/../../data/db/parser_homework.py",
+        QDir::currentPath() + "/data/db/parser_homework.py"
+    };
+
+    QString scriptPath;
+    for (const QString &path : searchPaths) {
+        if (QFileInfo::exists(path)) {
+            scriptPath = QFileInfo(path).absoluteFilePath();
+            break;
+        }
+    }
+
+    QString dbPath = QCoreApplication::applicationDirPath() + "/db/homework.db";
+
+    if (scriptPath.isEmpty()) {
+        qWarning() << "⚠️ parser_homework.py не найден, пропускаем ДЗ";
+        m_isSyncing = false;
+        emit syncFinished();
+        return;
+    }
+
+    qDebug() << "🔄 Запуск парсера домашних заданий:" << scriptPath;
+    m_homeworkRunner->runParser(scriptPath, m_pendingJwtToken, dbPath);
+}
+
+void ScheduleManager::onHomeworkParserFinished(bool success, const QString &message)
+{
+    if (success) {
+        qDebug() << "✅ Парсер ДЗ завершён:" << message;
+        loadHomeworkFromDb();
+        emit homeworkUpdated();
+    } else {
+        qWarning() << "⚠️ Парсер ДЗ провалился:" << message;
+    }
+
+    m_isSyncing = false;
+    emit syncFinished();
+}
+
+// ─── Загрузка ДЗ из SQLite ─────────────────────────────────────────
+
+void ScheduleManager::loadHomeworkFromDb()
+{
+    QString dbPath = QCoreApplication::applicationDirPath() + "/db/homework.db";
+
+    if (!QFileInfo::exists(dbPath)) {
+        dbPath = QCoreApplication::applicationDirPath() + "/../db/homework.db";
+    }
+    if (!QFileInfo::exists(dbPath)) {
+        dbPath = QDir::currentPath() + "/data/db/homework.db";
+    }
+
+    if (!QFileInfo::exists(dbPath)) {
+        qDebug() << "📭 homework.db не найден";
+        return;
+    }
+
+    QString connName = "homework_load";
+    if (QSqlDatabase::contains(connName)) {
+        QSqlDatabase::removeDatabase(connName);
+    }
+
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", connName);
+    db.setDatabaseName(dbPath);
+
+    if (!db.open()) {
+        qWarning() << "❌ Не удалось открыть homework.db:" << db.lastError().text();
+        return;
+    }
+
+    QSqlQuery query(db);
+    if (query.exec("SELECT checked, current, overdue, under_inspection, all_tasks FROM tasks ORDER BY id DESC LIMIT 1")) {
+        if (query.next()) {
+            m_homeworkDone = query.value(0).toInt();
+            m_homeworkCurrent = query.value(1).toInt();
+            m_homeworkOverdue = query.value(2).toInt();
+            m_homeworkUnderInspection = query.value(3).toInt();
+            m_homeworkAll = query.value(4).toInt();
+
+            qDebug() << "📊 ДЗ: всего=" << m_homeworkAll
+                     << "сдано=" << m_homeworkDone
+                     << "на проверке=" << m_homeworkUnderInspection
+                     << "просрочено=" << m_homeworkOverdue
+                     << "текущие=" << m_homeworkCurrent;
+        }
+    }
+
+    db.close();
+    QSqlDatabase::removeDatabase(connName);
+}
+
+// ─── Геттеры ДЗ ────────────────────────────────────────────────────
+
+int ScheduleManager::homeworkAll() const { return m_homeworkAll; }
+int ScheduleManager::homeworkDone() const { return m_homeworkDone; }
+int ScheduleManager::homeworkOverdue() const { return m_homeworkOverdue; }
+int ScheduleManager::homeworkUnderInspection() const { return m_homeworkUnderInspection; }
+int ScheduleManager::homeworkCurrent() const { return m_homeworkCurrent; }

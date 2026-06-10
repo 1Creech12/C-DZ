@@ -15,7 +15,8 @@ public:
     explicit ParserRunner(QObject *parent = nullptr);
     ~ParserRunner() override;
 
-    void runParser(const QString &jwtToken, const QString &dbPath,
+    void runParser(const QString &scriptPath, const QString &jwtToken,
+                   const QString &dbPath,
                    const QDate &startDate = QDate(), const QDate &endDate = QDate());
     bool isRunning() const;
     void cancelParser();
@@ -35,10 +36,8 @@ private slots:
 private:
     QProcess *m_process;
     QString m_pythonPath;
-    QString m_parserScriptPath;
 
     bool findPython();
-    bool findParserScript();
 };
 
 #endif // PARSERRUNNER_H
