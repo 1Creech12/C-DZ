@@ -4,9 +4,8 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QLabel>
-#include <QComboBox>
 #include <QCalendarWidget>
-#include <QListWidget>
+#include <QTextBrowser>
 #include <QDate>
 #include "../../core/schedule/ScheduleModels.h"
 
@@ -25,7 +24,6 @@ public:
     explicit ScheduleWidget(ScheduleManager *scheduleManager, QWidget *parent = nullptr);
 
 private slots:
-    void onViewModeChanged(int index);
     void onPreviousDate();
     void onNextDate();
     void onDateSelected(const QDate &date);
@@ -33,6 +31,11 @@ private slots:
     void onWeekScheduleLoaded(const WeekSchedule &schedule);
     void onSyncStarted();
     void onSyncFinished();
+    void onDayButtonClicked();
+    void onCalendarDayClicked(const QDate &date);
+    void onDayViewClicked();
+    void onWeekViewClicked();
+    void onMonthViewClicked();
 
 private:
     void initUI();
@@ -41,6 +44,10 @@ private:
     void updateMonthView(const QDate &month);
     void displayLessons(const QVector<Lesson> &lessons);
     void applyStyles();
+    void createWeekDayButtons(const QDate &startDate);
+    void updateCalendarForMonth(const QDate &month);
+    void updateDayButtonStyles();
+    void updateViewModeButtons();
 
     ScheduleManager *m_scheduleManager;
     ViewMode m_currentMode;
@@ -48,12 +55,18 @@ private:
 
     // UI элементы
     QLabel *m_dateLabel;
-    QComboBox *m_viewModeCombo;
+    QPushButton *m_dayViewBtn;
+    QPushButton *m_weekViewBtn;
+    QPushButton *m_monthViewBtn;
     QPushButton *m_prevButton;
     QPushButton *m_nextButton;
     QPushButton *m_todayButton;
-    QListWidget *m_lessonsListWidget;
+    QTextBrowser *m_lessonsListWidget;
     QCalendarWidget *m_calendarWidget;
+    QWidget *m_daysContainer;
+    QVector<QPushButton*> m_dayButtons;
+    QPushButton *m_currentSelectedButton;
+    QMap<QDate, bool> m_daysWithLessons;
 };
 
 #endif // SCHEDULEWIDGET_H
