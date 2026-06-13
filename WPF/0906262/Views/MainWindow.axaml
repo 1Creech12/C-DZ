@@ -1,0 +1,60 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
+        x:Class="_0906262.Views.MainWindow"
+        Title="Калькулятор"
+        Width="320" Height="480"
+        WindowStartupLocation="CenterScreen">
+    
+    <Grid RowDefinitions="Auto,Auto,*" Margin="10">
+        <TextBox x:Name="PreviousOperationTextBox" 
+                 Grid.Row="0"
+                 IsReadOnly="True" 
+                 HorizontalAlignment="Right" 
+                 FontSize="16" 
+                 Foreground="Gray" 
+                 Background="Transparent" 
+                 BorderThickness="0"
+                 Margin="0,0,0,5"
+                 TextAlignment="Right"/>
+        
+        <TextBox x:Name="CurrentNumberTextBox" 
+                 Grid.Row="1"
+                 IsReadOnly="True" 
+                 HorizontalAlignment="Right" 
+                 FontSize="32" 
+                 FontWeight="Bold"
+                 Background="Transparent" 
+                 BorderThickness="0"
+                 Margin="0,0,0,15"
+                 TextAlignment="Right"/>
+        
+        <UniformGrid Grid.Row="2" Columns="4" Rows="5" ColumnSpacing="5" RowSpacing="5">
+            <Button Content="C" Click="ClearAll_Click" FontSize="18" FontWeight="Bold" Foreground="Red"/>
+            <Button Content="CE" Click="ClearEntry_Click" FontSize="18" FontWeight="Bold" Foreground="Red"/>
+            <Button Content="⌫" Click="Backspace_Click" FontSize="18" FontWeight="Bold"/>
+            <Button Content="/" Click="Operator_Click" FontSize="18" FontWeight="Bold" Tag="/"/>
+            
+            <Button Content="7" Click="Digit_Click" FontSize="20" Tag="7"/>
+            <Button Content="8" Click="Digit_Click" FontSize="20" Tag="8"/>
+            <Button Content="9" Click="Digit_Click" FontSize="20" Tag="9"/>
+            <Button Content="*" Click="Operator_Click" FontSize="18" FontWeight="Bold" Tag="*"/>
+            
+            <Button Content="4" Click="Digit_Click" FontSize="20" Tag="4"/>
+            <Button Content="5" Click="Digit_Click" FontSize="20" Tag="5"/>
+            <Button Content="6" Click="Digit_Click" FontSize="20" Tag="6"/>
+            <Button Content="-" Click="Operator_Click" FontSize="18" FontWeight="Bold" Tag="-"/>
+            
+            <Button Content="1" Click="Digit_Click" FontSize="20" Tag="1"/>
+            <Button Content="2" Click="Digit_Click" FontSize="20" Tag="2"/>
+            <Button Content="3" Click="Digit_Click" FontSize="20" Tag="3"/>
+            <Button Content="+" Click="Operator_Click" FontSize="18" FontWeight="Bold" Tag="+"/>
+            
+            <Button Content="0" Click="Digit_Click" FontSize="20" Tag="0" Classes="zero-button"/>
+            <Button Content="." Click="Decimal_Click" FontSize="20" FontWeight="Bold" Tag="."/>
+            <Button Content="=" Click="Equals_Click" FontSize="20" FontWeight="Bold" Background="#4CAF50" Foreground="White" Tag="="/>
+        </UniformGrid>
+    </Grid>
+</Window>
