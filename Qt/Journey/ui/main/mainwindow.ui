@@ -867,7 +867,7 @@ QListWidget::item {
                    </item>
                    <item>
                     <property name="text">
-                     <string>▶ 🥉 Владислав — 1 250</string>
+                     <string>▶ 🥉 Александр — 1 250</string>
                     </property>
                    </item>
                    <item>
@@ -1035,42 +1035,17 @@ QListWidget::item {
                </property>
                <item>
                 <property name="text">
-                 <string>Обьектно-ориентированное программирования. Язык UML — 02.06.2026</string>
+                 <string>23.06.2026 - Поддержка  итестирование программных модулей</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>Платформа Microsoft .NET и язык программирования C# — 04.06.2026</string>
+                 <string>25.06.2026 - Разработка программных модулей</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>История 2 курс — 05.06.2026</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Обьектно-ориентированное прграммирование с использованием языка C++ — 10.06.2026</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Основы разработки приложений с использование Windows Forms и WPF — 18.06.2026</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Разработка программных модулей — 22.06.2026</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Разработка мобильных приложений — 24.06.2026</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Поддержка и тестирование программных модулей — 26.06.2026</string>
+                 <string>26.06.2026 - Основы разработки приложений с использованием Windows Forms и WPF</string>
                 </property>
                </item>
               </widget>

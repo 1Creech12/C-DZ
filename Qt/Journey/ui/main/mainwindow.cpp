@@ -79,7 +79,7 @@ void MainWindow::onLogout()
 
 void MainWindow::applyStyles()
 {
-    // Забей, заглушка что бы эта залупа работала
+    // Костыль
 }
 
 void MainWindow::onSyncClicked()
