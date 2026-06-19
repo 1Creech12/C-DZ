@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "targets": {
     "net10.0": {
       "Avalonia/12.0.4": {
@@ -1665,11 +1665,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/creech12/projects/C-DZ/WPF/1006262/1006262.csproj",
+      "projectUniqueName": "/Users/creech12/Documents/projects/C-DZ/WPF/1006262/1006262.csproj",
       "projectName": "1006262",
-      "projectPath": "/Users/creech12/projects/C-DZ/WPF/1006262/1006262.csproj",
+      "projectPath": "/Users/creech12/Documents/projects/C-DZ/WPF/1006262/1006262.csproj",
       "packagesPath": "/Users/creech12/.nuget/packages/",
-      "outputPath": "/Users/creech12/projects/C-DZ/WPF/1006262/obj/",
+      "outputPath": "/Users/creech12/Documents/projects/C-DZ/WPF/1006262/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/creech12/.nuget/NuGet/NuGet.Config"
@@ -1682,6 +1682,7 @@
       },
       "frameworks": {
         "net10.0": {
+          "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {}
         }
@@ -1696,10 +1697,11 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.200"
+      "SdkAnalysisLevel": "10.0.300"
     },
     "frameworks": {
       "net10.0": {
+        "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
           "Avalonia": {
@@ -1743,7 +1745,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.203/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.301/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",

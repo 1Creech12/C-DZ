@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Gdza4MXJCJs=",
+  "dgSpecHash": "qk1t3nNlFUA=",
   "success": true,
-  "projectFilePath": "/Users/creech12/projects/C-DZ/WPF/040626/040626.csproj",
+  "projectFilePath": "/Users/creech12/Documents/projects/C-DZ/WPF/040626/040626.csproj",
   "expectedPackageFiles": [
     "/Users/creech12/.nuget/packages/avalonia/12.0.4/avalonia.12.0.4.nupkg.sha512",
     "/Users/creech12/.nuget/packages/avalonia.angle.windows.natives/2.1.27548.20260419/avalonia.angle.windows.natives.2.1.27548.20260419.nupkg.sha512",
