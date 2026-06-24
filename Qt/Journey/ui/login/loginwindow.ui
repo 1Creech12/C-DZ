@@ -25,44 +25,7 @@
   <property name="windowTitle">
    <string>Journal - Авторизация</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">
-QWidget#LoginWindow {
-    background-color: #ffffff;
-}
-QLabel {
-    color: #333;
-}
-QLineEdit {
-    background-color: #f5f5f5;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    padding: 8px;
-    font-size: 12px;
-}
-QLineEdit:focus {
-    border: 1px solid #2196f3;
-}
-QCheckBox {
-    color: #333;
-}
-QPushButton {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px;
-    font-size: 14px;
-    font-weight: bold;
-}
-QPushButton:hover {
-    background-color: #45a049;
-}
-QPushButton:pressed {
-    background-color: #3d8b40;
-}
-   </string>
-  </property>
+  
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
     <number>15</number>

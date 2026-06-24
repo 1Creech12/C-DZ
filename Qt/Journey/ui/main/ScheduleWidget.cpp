@@ -232,12 +232,22 @@ void ScheduleWidget::updateMonthView(const QDate &month)
     m_currentDate = month;
 }
 
-void ScheduleWidget::displayLessons(const QVector<Lesson> &lessons)
+void ScheduleWidget::displayLessons(const QVector<Lesson> &lessons, bool isDark)
 {
     if (lessons.isEmpty()) {
-        m_lessonsListWidget->setText("Нет занятий");
+        m_lessonsListWidget->setHtml(
+            "<div style='text-align: center; color: #999; padding: 20px;'>"
+            "<span style='font-size: 16px;'>Занятий нет</span><br>"
+            "<span style='font-size: 12px;'>На этот день занятия не запланированы</span>"
+            "</div>"
+            );
         return;
     }
+
+    QString bgColor = isDark ? "#16213e" : "#f9f9f9";
+    QString titleColor = isDark ? "#e0e0e0" : "#333";
+    QString infoColor = isDark ? "#aaa" : "#666";
+    QString subColor = isDark ? "#888" : "#999";
 
     QString html = "<div style='margin: 0; padding: 0;'>";
 
@@ -248,18 +258,22 @@ void ScheduleWidget::displayLessons(const QVector<Lesson> &lessons)
         }
 
         html += QString(
-            "<div style='padding: 8px 10px; background-color: #f9f9f9; "
-            "border-left: 4px solid %1; margin-bottom: 4px; border-radius: 4px;'>"
-            "<b style='font-size: 13px; color: #333;'>%2</b><br/>"
-            "<span style='color: #666; font-size: 11px;'>%3 - %4</span><br/>"
-            "<span style='color: #999; font-size: 10px;'>Ауд: %5 | Преп: %6</span>"
-            "</div>"
-        ).arg(borderColor)
-         .arg(lesson.subject)
-         .arg(lesson.startTime.toString("HH:mm"))
-         .arg(lesson.endTime.toString("HH:mm"))
-         .arg(lesson.classroom)
-         .arg(lesson.teacher);
+                    "<div style='padding: 8px 10px; background-color: %1; "
+                    "border-left: 4px solid %2; margin-bottom: 4px; border-radius: 4px;'>"
+                    "<b style='font-size: 13px; color: %3;'>%4</b><br/>"
+                    "<span style='color: %5; font-size: 11px;'>%6 - %7</span><br/>"
+                    "<span style='color: %8; font-size: 10px;'>Ауд: %9 | Преп: %10</span>"
+                    "</div>"
+                    ).arg(bgColor)
+                    .arg(borderColor)
+                    .arg(titleColor)
+                    .arg(lesson.subject)
+                    .arg(infoColor)
+                    .arg(lesson.startTime.toString("HH:mm"))
+                    .arg(lesson.endTime.toString("HH:mm"))
+                    .arg(subColor)
+                    .arg(lesson.classroom)
+                    .arg(lesson.teacher);
     }
 
     html += "</div>";
@@ -279,7 +293,7 @@ void ScheduleWidget::onDayScheduleLoaded(const DaySchedule &schedule)
                 "</div>"
                 );
         } else {
-            displayLessons(schedule.lessons);
+            displayLessons(schedule.lessons, m_isDark);
         }
     }
 }
@@ -291,7 +305,7 @@ void ScheduleWidget::onWeekScheduleLoaded(const WeekSchedule &schedule)
         for (const DaySchedule &day : schedule.days) {
             allLessons.append(day.lessons);
         }
-        displayLessons(allLessons);
+        displayLessons(allLessons, m_isDark);
     }
 }
 
@@ -443,4 +457,78 @@ void ScheduleWidget::updateViewModeButtons()
     m_dayViewBtn->setStyleSheet(m_currentMode == DayView ? selectedStyle : normalStyle);
     m_weekViewBtn->setStyleSheet(m_currentMode == WeekView ? selectedStyle : normalStyle);
     m_monthViewBtn->setStyleSheet(m_currentMode == MonthView ? selectedStyle : normalStyle);
+}
+
+void ScheduleWidget::applyTheme(bool isDark)
+{
+    m_isDark = isDark;
+    if (isDark) {
+        setStyleSheet(R"(
+            QWidget {
+                background-color: #1a1a2e;
+                color: #e0e0e0;
+            }
+            QPushButton {
+                background-color: #16213e;
+                border: 1px solid #0f3460;
+                border-radius: 4px;
+                padding: 6px 12px;
+                color: #e0e0e0;
+                font-weight: 500;
+            }
+            QPushButton:hover {
+                background-color: #0f3460;
+            }
+        )");
+
+        if (m_dateLabel)
+            m_dateLabel->setStyleSheet("font-size: 18px; font-weight: bold; color: #e0e0e0;");
+
+        if (m_lessonsListWidget)
+            m_lessonsListWidget->setStyleSheet(
+                "QTextBrowser { border: 1px solid #0f3460; border-radius: 4px; background-color: #16213e; color: #e0e0e0; }");
+
+        if (m_calendarWidget)
+            m_calendarWidget->setStyleSheet(
+                "QCalendarWidget { background-color: #16213e; color: #e0e0e0; }"
+                "QCalendarWidget QAbstractItemView { selection-background-color: #4CAF50; color: #e0e0e0; background-color: #16213e; }"
+                "QCalendarWidget QToolButton { color: #e0e0e0; background-color: #16213e; }"
+                "QCalendarWidget QMenu { background-color: #16213e; color: #e0e0e0; }");
+    } else {
+        setStyleSheet(R"(
+            QWidget {
+                background-color: #ffffff;
+                color: #333;
+            }
+            QPushButton {
+                background-color: #f5f5f5;
+                border: 1px solid #e0e0e0;
+                border-radius: 4px;
+                padding: 6px 12px;
+                color: #333;
+                font-weight: 500;
+            }
+            QPushButton:hover {
+                background-color: #eeeeee;
+            }
+        )");
+
+        if (m_dateLabel)
+            m_dateLabel->setStyleSheet("font-size: 18px; font-weight: bold; color: #333;");
+
+        if (m_lessonsListWidget)
+            m_lessonsListWidget->setStyleSheet(
+                "QTextBrowser { border: 1px solid #e0e0e0; border-radius: 4px; background-color: #fafafa; }");
+
+        if (m_calendarWidget)
+            m_calendarWidget->setStyleSheet(
+                "QCalendarWidget { background-color: #ffffff; }"
+                "QCalendarWidget QAbstractItemView { selection-background-color: #4CAF50; }"
+                "QCalendarWidget QToolButton { color: #333; }");
+    }
+
+    updateViewModeButtons();
+    if (!m_dayButtons.isEmpty()) {
+        updateDayButtonStyles();
+    }
 }

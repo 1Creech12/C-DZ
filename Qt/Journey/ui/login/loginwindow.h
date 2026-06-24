@@ -36,6 +36,7 @@ private:
     MainWindow *m_mainWindow;
     QString m_savedUsername;
     QString m_savedPassword;
+    void applySystemTheme();
 };
 
 #endif // LOGINWINDOW_H

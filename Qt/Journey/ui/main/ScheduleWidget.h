@@ -22,6 +22,8 @@ public:
     };
 
     explicit ScheduleWidget(ScheduleManager *scheduleManager, QWidget *parent = nullptr);
+    void applyTheme(bool isDark);
+    void displayLessons(const QVector<Lesson> &lessons, bool isDark = false);
 
 private slots:
     void onPreviousDate();
@@ -48,6 +50,7 @@ private:
     void updateCalendarForMonth(const QDate &month);
     void updateDayButtonStyles();
     void updateViewModeButtons();
+    bool m_isDark = false;
 
     ScheduleManager *m_scheduleManager;
     ViewMode m_currentMode;

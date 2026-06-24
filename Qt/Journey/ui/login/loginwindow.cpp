@@ -5,6 +5,7 @@
 #include "../../core/auth/authmanager.h"
 #include "../../core/auth/AuthModels.h"
 #include <QMessageBox>
+#include <QProcess>
 
 LoginWindow::LoginWindow(AuthManager *authManager, ApiClient *apiClient, QWidget *parent)
     : QWidget(parent)
@@ -14,6 +15,8 @@ LoginWindow::LoginWindow(AuthManager *authManager, ApiClient *apiClient, QWidget
     , m_mainWindow(nullptr)
 {
     ui->setupUi(this);
+
+    applySystemTheme();
 
     connect(m_authManager, &AuthManager::loginSuccess,
             this, &LoginWindow::onLoginSuccess);
@@ -85,4 +88,36 @@ void LoginWindow::loadSavedCredentials()
         ui->passwordEdit->setText(settings.value("credentials/password").toString());
         ui->rememberCheck->setChecked(true);
     }
+}
+
+void LoginWindow::applySystemTheme()
+{
+    bool isDark = false;
+    QProcess process;
+    process.start("defaults", QStringList() << "read" << "-g" << "AppleInterfaceStyle");
+    process.waitForFinished();
+    isDark = (process.readAllStandardOutput().trimmed() == "Dark");
+
+    QString theme;
+    if (isDark) {
+        theme = R"(
+            QWidget { background-color: #1a1a2e; color: #e0e0e0; }
+            QLabel { color: #e0e0e0; background: transparent; }
+            QLineEdit { background-color: #16213e; border: 1px solid #0f3460; border-radius: 4px; padding: 8px; color: #e0e0e0; }
+            QPushButton { background-color: #4CAF50; color: white; border: none; border-radius: 4px; padding: 10px; font-weight: 600; }
+            QPushButton:hover { background-color: #45a049; }
+            QCheckBox { color: #888; }
+        )";
+    } else {
+        theme = R"(
+            QWidget { background-color: #ffffff; color: #333; }
+            QLabel { color: #333; background: transparent; }
+            QLineEdit { background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 4px; padding: 8px; color: #333; }
+            QPushButton { background-color: #4CAF50; color: white; border: none; border-radius: 4px; padding: 10px; font-weight: 600; }
+            QPushButton:hover { background-color: #45a049; }
+            QCheckBox { color: #666; }
+        )";
+    }
+
+    setStyleSheet(theme);
 }

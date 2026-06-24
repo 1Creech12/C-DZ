@@ -16,6 +16,13 @@ public:
     explicit ScheduleManager(ApiClient *apiClient, QObject *parent = nullptr);
     ~ScheduleManager();
 
+    struct FeedbackInfo {
+        QString date;
+        QString message;
+        QString subject;
+        QString teacher;
+    };
+
     // Загрузка расписания
     void loadDaySchedule(const QDate &date);
     void loadWeekSchedule(const QDate &startDate);
@@ -37,6 +44,32 @@ public:
     int homeworkOverdue() const;
     int homeworkUnderInspection() const;
     int homeworkCurrent() const;
+    int gradesPercent() const;
+    int attendancePercent() const;
+    int coins() const;
+    int gems() const;
+
+    int groupPosition() const;
+    int groupTotal() const;
+    int streamPosition() const;
+    int streamTotal() const;
+    void loadRatingFromDb();
+    void loadUserInfoFromDb();
+
+    QString userName() const;
+    int userCoins() const;
+    int userGems() const;
+    QVector<FeedbackInfo> feedback() const;
+    void loadFeedbackFromDb();  // сделайте public
+
+    struct StudentInfo {
+        QString fullName;
+        int amount;
+        int position;
+        bool isCurrentUser;
+    };
+    QVector<StudentInfo> groupRating() const;
+    QVector<StudentInfo> streamRating() const;
 
 public slots:
     void syncWithParser(const QString &jwtToken);
@@ -51,6 +84,12 @@ signals:
     void syncFinished();
     void syncFailed(const QString &error);
     void homeworkUpdated();
+    void metricsUpdated();
+    void parserProgress(int percent);
+    void syncStatusChanged(const QString &status);
+    void ratingUpdated();
+    void userInfoUpdated();
+    void feedbackUpdated();
 
 private slots:
     void onScheduleDataReceived(const QJsonObject &json);
@@ -83,6 +122,36 @@ private:
     int m_homeworkOverdue = 0;
     int m_homeworkUnderInspection = 0;
     int m_homeworkCurrent = 0;
+
+    ParserRunner *m_metricsRunner = nullptr;
+    void startMetricsSync();
+    void loadMetricsFromMainDb();
+    int m_gradesPercent = 0;
+    int m_attendancePercent = 0;
+    int m_coins = 0;
+    int m_gems = 0;
+
+    ParserRunner *m_ratingRunner = nullptr;
+    void startRatingSync();
+
+    int m_groupPosition = 0;
+    int m_groupTotal = 0;
+    int m_streamPosition = 0;
+    int m_streamTotal = 0;
+    QVector<StudentInfo> m_groupRating;
+    QVector<StudentInfo> m_streamRating;
+
+    ParserRunner *m_userInfoRunner = nullptr;
+    void startUserInfoSync();
+
+    ParserRunner *m_feedbackRunner = nullptr;
+    void startFeedbackSync();
+
+    QVector<FeedbackInfo> m_feedback;
+
+    QString m_userName;
+    int m_userCoins = 0;
+    int m_userGems = 0;
 
     QString m_pendingJwtToken;
 };

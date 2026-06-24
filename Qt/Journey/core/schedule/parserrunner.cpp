@@ -7,7 +7,7 @@ ParserRunner::ParserRunner(QObject *parent)
     : QObject(parent)
     , m_process(nullptr)
 {
-    findPython();
+    // Больше не ищем Python — используем свои бинарники
 }
 
 ParserRunner::~ParserRunner()
@@ -19,23 +19,22 @@ ParserRunner::~ParserRunner()
     }
 }
 
-bool ParserRunner::findPython()
+QString ParserRunner::binaryPath(const QString &scriptName) const
 {
-    QStringList pythonCandidates = {"python3", "python"};
+    // scriptName: "schedule.py", "homework.py", "performance.py"
+    // Возвращает путь к бинарнику в db/dist/
+    QFileInfo scriptInfo(scriptName);
+    QString baseName = scriptInfo.completeBaseName(); // "schedule" без .py
 
-    for (const QString &python : pythonCandidates) {
-        QProcess testProcess;
-        testProcess.start(python, {"--version"});
-        if (testProcess.waitForFinished(2000) && testProcess.exitCode() == 0) {
-            m_pythonPath = python;
-            qDebug() << "Python:" << m_pythonPath;
-            return true;
-        }
-    }
+    QString distDir = QCoreApplication::applicationDirPath() + "/db/dist";
+    QString binary = distDir + "/" + baseName;
 
-    qWarning() << "Python не найден!";
-    m_pythonPath = "python3";
-    return false;
+    // На Windows добавляем .exe
+#ifdef Q_OS_WIN
+    binary += ".exe";
+#endif
+
+    return binary;
 }
 
 void ParserRunner::runParser(const QString &scriptPath, const QString &jwtToken,
@@ -47,9 +46,12 @@ void ParserRunner::runParser(const QString &scriptPath, const QString &jwtToken,
         return;
     }
 
-    // Проверяем существование скрипта
-    if (!QFileInfo::exists(scriptPath)) {
-        emit parserError("Скрипт парсера не найден: " + scriptPath);
+    // Определяем путь к бинарнику
+    QString executable = binaryPath(scriptPath);
+
+    // Проверяем существование бинарника
+    if (!QFileInfo::exists(executable)) {
+        emit parserError("Бинарник парсера не найден: " + executable);
         return;
     }
 
@@ -65,8 +67,8 @@ void ParserRunner::runParser(const QString &scriptPath, const QString &jwtToken,
                 this, &ParserRunner::onReadyReadStandardError);
     }
 
+    // Аргументы для бинарника
     QStringList args;
-    args << scriptPath;
     args << "--token" << jwtToken;
     args << "--db" << dbPath;
 
@@ -76,17 +78,18 @@ void ParserRunner::runParser(const QString &scriptPath, const QString &jwtToken,
     if (endDate.isValid()) {
         args << "--end-date" << endDate.toString("yyyy-MM-dd");
     } else if (startDate.isValid()) {
-        // По умолчанию: начальная дата + 3 месяца
         args << "--end-date" << startDate.addMonths(3).toString("yyyy-MM-dd");
     }
 
-    qDebug() << "Запуск парсера:" << m_pythonPath << args;
+    qDebug() << "Запуск парсера:" << executable << args;
 
-    m_process->start(m_pythonPath, args);
+    m_process->setProgram(executable);
+    m_process->setArguments(args);
+    m_process->start();
 
     if (m_process->waitForStarted(5000)) {
         emit parserStarted();
-        qDebug() << "Парсер запущен:" << scriptPath;
+        qDebug() << "Парсер запущен:" << executable;
     } else {
         emit parserError("Не удалось запустить парсер: " + m_process->errorString());
     }
@@ -126,7 +129,7 @@ void ParserRunner::onProcessError(QProcess::ProcessError error)
     QString errorMsg;
     switch (error) {
     case QProcess::FailedToStart:
-        errorMsg = "Не удалось запустить Python. Проверьте установку.";
+        errorMsg = "Не удалось запустить парсер. Проверьте наличие бинарников в db/dist/";
         break;
     case QProcess::Crashed:
         errorMsg = "Парсер аварийно завершился.";

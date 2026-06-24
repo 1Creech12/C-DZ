@@ -26,6 +26,8 @@ private slots:
     void onLogout();
     void onSyncClicked();
     void updateHomeworkLabels();
+    void updateMetricsDisplay();
+    void updateLeaderboard();
 
 private:
     void applyStyles();
@@ -34,6 +36,9 @@ private:
     AuthManager *m_authManager;
     ScheduleManager *m_scheduleManager;
     ScheduleWidget *m_scheduleWidget;
+    bool m_isDarkTheme = false;
+    void applyTheme();
+    void updateFeedbackList();
 };
 
 #endif // MAINWINDOW_H

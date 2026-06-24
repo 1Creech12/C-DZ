@@ -6,7 +6,7 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    QApplication::setApplicationName("JournalApp");
+    QApplication::setApplicationName("Journey");
     QApplication::setOrganizationName("TopAcademy");
 
     QLocale::setDefault(QLocale(QLocale::Russian, QLocale::Russia));

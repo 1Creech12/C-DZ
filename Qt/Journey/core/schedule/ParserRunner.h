@@ -34,10 +34,8 @@ private slots:
     void onReadyReadStandardError();
 
 private:
+    QString binaryPath(const QString &scriptName) const;
     QProcess *m_process;
-    QString m_pythonPath;
-
-    bool findPython();
 };
 
 #endif // PARSERRUNNER_H

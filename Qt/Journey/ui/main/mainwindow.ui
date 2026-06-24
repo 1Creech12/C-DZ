@@ -19,71 +19,6 @@
   <property name="windowTitle">
    <string>Journey</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">
-QMainWindow {
-    background-color: #ffffff;
-}
-QLabel {
-    color: #333;
-}
-QPushButton {
-    background-color: #f5f5f5;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    padding: 6px 12px;
-    color: #333;
-    font-weight: 500;
-}
-QPushButton:hover {
-    background-color: #eeeeee;
-}
-QPushButton:pressed {
-    background-color: #e0e0e0;
-}
-QComboBox {
-    background-color: #f5f5f5;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    padding: 4px 8px;
-}
-QListWidget {
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-}
-QListWidget::item {
-    padding: 8px;
-    border-bottom: 1px solid #f0f0f0;
-}
-QListWidget::item:selected {
-    background-color: #f5f5f5;
-}
-QTabWidget::pane {
-    border: 1px solid #e0e0e0;
-    border-top: none;
-    background-color: #ffffff;
-}
-QTabBar::tab {
-    background-color: #f8f9fa;
-    border: 1px solid #e0e0e0;
-    border-bottom: none;
-    padding: 10px 20px;
-    margin-right: 2px;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    color: #666;
-    font-weight: 500;
-}
-QTabBar::tab:selected {
-    background-color: #ffffff;
-    color: #333;
-    border-bottom: 2px solid #4CAF50;
-}
-QTabBar::tab:hover {
-    background-color: #f0f0f0;
-}
-   </string>
-  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
     <property name="spacing">
@@ -115,14 +50,6 @@ QTabBar::tab:hover {
         <height>60</height>
        </size>
       </property>
-      <property name="styleSheet">
-       <string notr="true">
-QWidget#topBar {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #e0e0e0;
-}
-   </string>
-      </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <property name="spacing">
         <number>12</number>
@@ -141,9 +68,6 @@ QWidget#topBar {
        </property>
        <item>
         <widget class="QLabel" name="appTitle">
-         <property name="styleSheet">
-          <string notr="true">font-size: 18px; font-weight: bold; color: #333;</string>
-         </property>
          <property name="text">
           <string>Journey</string>
          </property>
@@ -164,16 +88,6 @@ QWidget#topBar {
        </item>
        <item>
         <widget class="QFrame" name="coinsBadge">
-         <property name="styleSheet">
-          <string notr="true">
-QFrame#coinsBadge {
-    background-color: #FFF8E1;
-    border: 1px solid #FFD54F;
-    border-radius: 20px;
-    padding: 6px 14px;
-}
-      </string>
-         </property>
          <layout class="QHBoxLayout" name="coinsBadgeLayout">
           <property name="spacing">
            <number>6</number>
@@ -192,9 +106,6 @@ QFrame#coinsBadge {
           </property>
           <item>
            <widget class="QLabel" name="coinsIcon">
-            <property name="styleSheet">
-             <string notr="true">font-size: 16px; background: transparent;</string>
-            </property>
             <property name="text">
              <string>Ик</string>
             </property>
@@ -202,9 +113,6 @@ QFrame#coinsBadge {
           </item>
           <item>
            <widget class="QLabel" name="coinsValue">
-            <property name="styleSheet">
-             <string notr="true">font-size: 15px; font-weight: bold; color: #F9A825; background: transparent;</string>
-            </property>
             <property name="text">
              <string>1 250</string>
             </property>
@@ -215,16 +123,6 @@ QFrame#coinsBadge {
        </item>
        <item>
         <widget class="QFrame" name="gemsBadge">
-         <property name="styleSheet">
-          <string notr="true">
-QFrame#gemsBadge {
-    background-color: #E8F5E9;
-    border: 1px solid #81C784;
-    border-radius: 20px;
-    padding: 6px 14px;
-}
-      </string>
-         </property>
          <layout class="QHBoxLayout" name="gemsBadgeLayout">
           <property name="spacing">
            <number>6</number>
@@ -243,9 +141,6 @@ QFrame#gemsBadge {
           </property>
           <item>
            <widget class="QLabel" name="gemsIcon">
-            <property name="styleSheet">
-             <string notr="true">font-size: 16px; background: transparent;</string>
-            </property>
             <property name="text">
              <string>Ик</string>
             </property>
@@ -253,9 +148,6 @@ QFrame#gemsBadge {
           </item>
           <item>
            <widget class="QLabel" name="gemsValue">
-            <property name="styleSheet">
-             <string notr="true">font-size: 15px; font-weight: bold; color: #2E7D32; background: transparent;</string>
-            </property>
             <property name="text">
              <string>340</string>
             </property>
@@ -266,9 +158,6 @@ QFrame#gemsBadge {
        </item>
        <item>
         <widget class="QLabel" name="userLabel">
-         <property name="styleSheet">
-          <string notr="true">color: #666; font-size: 12px; margin-left: 8px;</string>
-         </property>
          <property name="text">
           <string>Пользователь</string>
          </property>
@@ -276,24 +165,6 @@ QFrame#gemsBadge {
        </item>
        <item>
         <widget class="QPushButton" name="syncButton">
-         <property name="styleSheet">
-          <string notr="true">
-                        QPushButton {
-                            background-color: #4CAF50;
-                            color: white;
-                            border: none;
-                            border-radius: 4px;
-                            padding: 6px 12px;
-                            font-weight: 500;
-                        }
-                        QPushButton:hover {
-                            background-color: #45a049;
-                        }
-                        QPushButton:pressed {
-                            background-color: #3d8b40;
-                        }
-                    </string>
-         </property>
          <property name="text">
           <string>🔄 Синхронизировать</string>
          </property>
@@ -306,21 +177,6 @@ QFrame#gemsBadge {
            <width>80</width>
            <height>16777215</height>
           </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">
-QPushButton {
-    background-color: #ff6b6b;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 6px 12px;
-    font-weight: 500;
-}
-QPushButton:hover {
-    background-color: #ff5252;
-}
-      </string>
          </property>
          <property name="text">
           <string>Выход</string>
@@ -357,9 +213,6 @@ QPushButton:hover {
         </property>
         <item>
          <widget class="QLabel" name="welcomeLabel">
-          <property name="styleSheet">
-           <string notr="true">font-size: 24px; font-weight: bold; color: #1a1a2e;</string>
-          </property>
           <property name="text">
            <string>Добро пожаловать!</string>
           </property>
@@ -372,25 +225,12 @@ QPushButton:hover {
           </property>
           <item>
            <widget class="QFrame" name="gradesAttendanceBlock">
-            <property name="styleSheet">
-             <string notr="true">
-QFrame#gradesAttendanceBlock {
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 16px;
-}
-              </string>
-            </property>
             <layout class="QVBoxLayout" name="gradesAttendanceLayout">
              <property name="spacing">
               <number>14</number>
              </property>
              <item>
               <widget class="QLabel" name="gradesAttendanceTitle">
-               <property name="styleSheet">
-                <string notr="true">font-size: 14px; font-weight: 600; color: #333;</string>
-               </property>
                <property name="text">
                 <string>Успеваемость</string>
                </property>
@@ -405,9 +245,6 @@ QFrame#gradesAttendanceBlock {
                 <layout class="QHBoxLayout" name="gradesHeaderLayout">
                  <item>
                   <widget class="QLabel" name="gradesLabel">
-                   <property name="styleSheet">
-                    <string notr="true">font-size: 12px; color: #666;</string>
-                   </property>
                    <property name="text">
                     <string>Оценки</string>
                    </property>
@@ -428,9 +265,6 @@ QFrame#gradesAttendanceBlock {
                  </item>
                  <item>
                   <widget class="QLabel" name="gradesPercentLabel">
-                   <property name="styleSheet">
-                    <string notr="true">font-size: 12px; font-weight: bold; color: #4CAF50;</string>
-                   </property>
                    <property name="text">
                     <string>87%</string>
                    </property>
@@ -440,20 +274,6 @@ QFrame#gradesAttendanceBlock {
                </item>
                <item>
                 <widget class="QProgressBar" name="gradesProgressBar">
-                 <property name="styleSheet">
-                  <string notr="true">
-QProgressBar {
-    background-color: #f0f0f0;
-    border: none;
-    border-radius: 4px;
-    height: 8px;
-}
-QProgressBar::chunk {
-    background-color: #4CAF50;
-    border-radius: 4px;
-}
-                        </string>
-                 </property>
                  <property name="value">
                   <number>87</number>
                  </property>
@@ -473,9 +293,6 @@ QProgressBar::chunk {
                 <layout class="QHBoxLayout" name="attendanceHeaderLayout">
                  <item>
                   <widget class="QLabel" name="attendanceLabel">
-                   <property name="styleSheet">
-                    <string notr="true">font-size: 12px; color: #666;</string>
-                   </property>
                    <property name="text">
                     <string>Посещаемость</string>
                    </property>
@@ -496,9 +313,6 @@ QProgressBar::chunk {
                  </item>
                  <item>
                   <widget class="QLabel" name="attendancePercentLabel">
-                   <property name="styleSheet">
-                    <string notr="true">font-size: 12px; font-weight: bold; color: #2196F3;</string>
-                   </property>
                    <property name="text">
                     <string>92%</string>
                    </property>
@@ -508,20 +322,6 @@ QProgressBar::chunk {
                </item>
                <item>
                 <widget class="QProgressBar" name="attendanceProgressBar">
-                 <property name="styleSheet">
-                  <string notr="true">
-QProgressBar {
-    background-color: #f0f0f0;
-    border: none;
-    border-radius: 4px;
-    height: 8px;
-}
-QProgressBar::chunk {
-    background-color: #2196F3;
-    border-radius: 4px;
-}
-                        </string>
-                 </property>
                  <property name="value">
                   <number>92</number>
                  </property>
@@ -537,25 +337,12 @@ QProgressBar::chunk {
           </item>
           <item>
            <widget class="QFrame" name="homeworkBlock">
-            <property name="styleSheet">
-             <string notr="true">
-QFrame#homeworkBlock {
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 16px;
-}
-              </string>
-            </property>
             <layout class="QVBoxLayout" name="homeworkBlockLayout">
              <property name="spacing">
               <number>10</number>
              </property>
              <item>
               <widget class="QLabel" name="homeworkBlockTitle">
-               <property name="styleSheet">
-                <string notr="true">font-size: 14px; font-weight: 600; color: #333;</string>
-               </property>
                <property name="text">
                 <string>Домашние задания</string>
                </property>
@@ -568,9 +355,6 @@ QFrame#homeworkBlock {
                </property>
                <item>
                 <widget class="QLabel" name="homeworkTotalLabel">
-                 <property name="styleSheet">
-                  <string notr="true">font-size: 11px; color: #666; background-color: #f5f5f5; border-radius: 4px; padding: 4px 8px;</string>
-                 </property>
                  <property name="text">
                   <string>Всего: 12</string>
                  </property>
@@ -578,9 +362,6 @@ QFrame#homeworkBlock {
                </item>
                <item>
                 <widget class="QLabel" name="homeworkDoneLabel">
-                 <property name="styleSheet">
-                  <string notr="true">font-size: 11px; color: #4CAF50; background-color: #E8F5E9; border-radius: 4px; padding: 4px 8px;</string>
-                 </property>
                  <property name="text">
                   <string>Сдано: 8</string>
                  </property>
@@ -595,9 +376,6 @@ QFrame#homeworkBlock {
                </property>
                <item>
                 <widget class="QLabel" name="homeworkPendingLabel">
-                 <property name="styleSheet">
-                  <string notr="true">font-size: 11px; color: #FF9800; background-color: #FFF3E0; border-radius: 4px; padding: 4px 8px;</string>
-                 </property>
                  <property name="text">
                   <string>На проверке: 2</string>
                  </property>
@@ -605,9 +383,6 @@ QFrame#homeworkBlock {
                </item>
                <item>
                 <widget class="QLabel" name="homeworkOverdueLabel">
-                 <property name="styleSheet">
-                  <string notr="true">font-size: 11px; color: #F44336; background-color: #FFEBEE; border-radius: 4px; padding: 4px 8px;</string>
-                 </property>
                  <property name="text">
                   <string>Просрочено: 1</string>
                  </property>
@@ -617,9 +392,6 @@ QFrame#homeworkBlock {
              </item>
              <item>
               <widget class="QLabel" name="homeworkCurrentLabel">
-               <property name="styleSheet">
-                <string notr="true">font-size: 14px; font-weight: bold; color: #2196F3; background-color: #E3F2FD; border-radius: 6px; padding: 10px 12px;</string>
-               </property>
                <property name="text">
                 <string>Текущие: 3 задания</string>
                </property>
@@ -630,25 +402,12 @@ QFrame#homeworkBlock {
           </item>
           <item>
            <widget class="QFrame" name="awardsBlock">
-            <property name="styleSheet">
-             <string notr="true">
-QFrame#awardsBlock {
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 16px;
-}
-              </string>
-            </property>
             <layout class="QVBoxLayout" name="awardsBlockLayout">
              <property name="spacing">
               <number>10</number>
              </property>
              <item>
               <widget class="QLabel" name="awardsBlockTitle">
-               <property name="styleSheet">
-                <string notr="true">font-size: 14px; font-weight: 600; color: #333;</string>
-               </property>
                <property name="text">
                 <string>Награды</string>
                </property>
@@ -661,19 +420,6 @@ QFrame#awardsBlock {
                  <width>16777215</width>
                  <height>110</height>
                 </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">
-QListWidget {
-    border: none;
-    background: transparent;
-}
-QListWidget::item {
-    padding: 6px 8px;
-    border-bottom: 1px solid #f5f5f5;
-    color: #333;
-}
-                    </string>
                </property>
                <item>
                 <property name="text">
@@ -709,16 +455,6 @@ QListWidget::item {
           </property>
           <item>
            <widget class="QFrame" name="leaderboardBlock">
-            <property name="styleSheet">
-             <string notr="true">
-QFrame#leaderboardBlock {
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 16px;
-}
-              </string>
-            </property>
             <layout class="QVBoxLayout" name="leaderboardBlockLayout">
              <property name="spacing">
               <number>8</number>
@@ -727,9 +463,6 @@ QFrame#leaderboardBlock {
               <layout class="QHBoxLayout" name="leaderboardHeaderLayout">
                <item>
                 <widget class="QLabel" name="leaderboardTitle">
-                 <property name="styleSheet">
-                  <string notr="true">font-size: 14px; font-weight: 600; color: #333;</string>
-                 </property>
                  <property name="text">
                   <string>📋 Таблица лидеров</string>
                  </property>
@@ -750,30 +483,6 @@ QFrame#leaderboardBlock {
                </item>
                <item>
                 <widget class="QPushButton" name="leaderboardGroupBtn">
-                 <property name="styleSheet">
-                  <string notr="true">
-QPushButton {
-    background-color: #f5f5f5;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    padding: 5px 14px;
-    font-size: 12px;
-    font-weight: 500;
-    color: #333;
-}
-QPushButton:checked {
-    background-color: #4CAF50;
-    color: #ffffff;
-    border: 1px solid #4CAF50;
-}
-QPushButton:hover {
-    background-color: #eeeeee;
-}
-QPushButton:checked:hover {
-    background-color: #43A047;
-}
-                        </string>
-                 </property>
                  <property name="text">
                   <string>Группа</string>
                  </property>
@@ -787,30 +496,6 @@ QPushButton:checked:hover {
                </item>
                <item>
                 <widget class="QPushButton" name="leaderboardStreamBtn">
-                 <property name="styleSheet">
-                  <string notr="true">
-QPushButton {
-    background-color: #f5f5f5;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    padding: 5px 14px;
-    font-size: 12px;
-    font-weight: 500;
-    color: #333;
-}
-QPushButton:checked {
-    background-color: #4CAF50;
-    color: #ffffff;
-    border: 1px solid #4CAF50;
-}
-QPushButton:hover {
-    background-color: #eeeeee;
-}
-QPushButton:checked:hover {
-    background-color: #43A047;
-}
-                        </string>
-                 </property>
                  <property name="text">
                   <string>Поток</string>
                  </property>
@@ -842,19 +527,6 @@ QPushButton:checked:hover {
                  </property>
                  <item>
                   <widget class="QListWidget" name="leaderboardGroupList">
-                   <property name="styleSheet">
-                    <string notr="true">
-QListWidget {
-    border: none;
-    background: transparent;
-}
-QListWidget::item {
-    padding: 6px 8px;
-    border-bottom: 1px solid #f5f5f5;
-    color: #333;
-}
-                            </string>
-                   </property>
                    <item>
                     <property name="text">
                      <string>🥇 Петров А. — 2 450</string>
@@ -925,19 +597,6 @@ QListWidget::item {
                  </property>
                  <item>
                   <widget class="QListWidget" name="leaderboardStreamList">
-                   <property name="styleSheet">
-                    <string notr="true">
-QListWidget {
-    border: none;
-    background: transparent;
-}
-QListWidget::item {
-    padding: 6px 8px;
-    border-bottom: 1px solid #f5f5f5;
-    color: #333;
-}
-                            </string>
-                   </property>
                    <item>
                     <property name="text">
                      <string>🥇 Ахметов Р. (ИС-21) — 🪙 3 200</string>
@@ -994,25 +653,12 @@ QListWidget::item {
           </item>
           <item>
            <widget class="QFrame" name="examsBlock">
-            <property name="styleSheet">
-             <string notr="true">
-QFrame#examsBlock {
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 16px;
-}
-              </string>
-            </property>
             <layout class="QVBoxLayout" name="examsBlockLayout">
              <property name="spacing">
               <number>8</number>
              </property>
              <item>
               <widget class="QLabel" name="examsBlockTitle">
-               <property name="styleSheet">
-                <string notr="true">font-size: 14px; font-weight: 600; color: #333;</string>
-               </property>
                <property name="text">
                 <string>Назначенные экзамены</string>
                </property>
@@ -1020,22 +666,9 @@ QFrame#examsBlock {
              </item>
              <item>
               <widget class="QListWidget" name="examsList">
-               <property name="styleSheet">
-                <string notr="true">
-QListWidget {
-    border: none;
-    background: transparent;
-}
-QListWidget::item {
-    padding: 6px 8px;
-    border-bottom: 1px solid #f5f5f5;
-    color: #333;
-}
-                    </string>
-               </property>
                <item>
                 <property name="text">
-                 <string>23.06.2026 - Поддержка  итестирование программных модулей</string>
+                 <string>23.06.2026 - Поддержка и тестирование программных модулей</string>
                 </property>
                </item>
                <item>
@@ -1055,25 +688,12 @@ QListWidget::item {
           </item>
           <item>
            <widget class="QFrame" name="ratingBlock">
-            <property name="styleSheet">
-             <string notr="true">
-QFrame#ratingBlock {
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 16px;
-}
-              </string>
-            </property>
             <layout class="QVBoxLayout" name="ratingBlockLayout">
              <property name="spacing">
               <number>10</number>
              </property>
              <item>
               <widget class="QLabel" name="ratingBlockTitle">
-               <property name="styleSheet">
-                <string notr="true">font-size: 14px; font-weight: 600; color: #333;</string>
-               </property>
                <property name="text">
                 <string>Рейтинг</string>
                </property>
@@ -1091,9 +711,6 @@ QFrame#ratingBlock {
                  </property>
                  <item>
                   <widget class="QLabel" name="ratingGroupLabel">
-                   <property name="styleSheet">
-                    <string notr="true">font-size: 11px; color: #999;</string>
-                   </property>
                    <property name="text">
                     <string>В группе</string>
                    </property>
@@ -1101,9 +718,6 @@ QFrame#ratingBlock {
                  </item>
                  <item>
                   <widget class="QLabel" name="ratingGroupValue">
-                   <property name="styleSheet">
-                    <string notr="true">font-size: 28px; font-weight: bold; color: #4CAF50;</string>
-                   </property>
                    <property name="text">
                     <string>#3</string>
                    </property>
@@ -1111,9 +725,6 @@ QFrame#ratingBlock {
                  </item>
                  <item>
                   <widget class="QLabel" name="ratingGroupTotal">
-                   <property name="styleSheet">
-                    <string notr="true">font-size: 11px; color: #bbb;</string>
-                   </property>
                    <property name="text">
                     <string>из 25</string>
                    </property>
@@ -1135,9 +746,6 @@ QFrame#ratingBlock {
                    <height>60</height>
                   </size>
                  </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: #e0e0e0;</string>
-                 </property>
                 </widget>
                </item>
                <item>
@@ -1147,9 +755,6 @@ QFrame#ratingBlock {
                  </property>
                  <item>
                   <widget class="QLabel" name="ratingStreamLabel">
-                   <property name="styleSheet">
-                    <string notr="true">font-size: 11px; color: #999;</string>
-                   </property>
                    <property name="text">
                     <string>В потоке</string>
                    </property>
@@ -1157,9 +762,6 @@ QFrame#ratingBlock {
                  </item>
                  <item>
                   <widget class="QLabel" name="ratingStreamValue">
-                   <property name="styleSheet">
-                    <string notr="true">font-size: 28px; font-weight: bold; color: #2196F3;</string>
-                   </property>
                    <property name="text">
                     <string>#12</string>
                    </property>
@@ -1167,9 +769,6 @@ QFrame#ratingBlock {
                  </item>
                  <item>
                   <widget class="QLabel" name="ratingStreamTotal">
-                   <property name="styleSheet">
-                    <string notr="true">font-size: 11px; color: #bbb;</string>
-                   </property>
                    <property name="text">
                     <string>из 100</string>
                    </property>
@@ -1225,9 +824,6 @@ QFrame#ratingBlock {
        <layout class="QVBoxLayout" name="gradesLayout">
         <item>
          <widget class="QLabel" name="gradesPlaceholder">
-          <property name="styleSheet">
-           <string notr="true">font-size: 18px; color: #999; margin: 50px;</string>
-          </property>
           <property name="text">
            <string>В разработке</string>
           </property>
@@ -1245,9 +841,6 @@ QFrame#ratingBlock {
        <layout class="QVBoxLayout" name="paymentLayout">
         <item>
          <widget class="QLabel" name="paymentPlaceholder">
-          <property name="styleSheet">
-           <string notr="true">font-size: 18px; color: #999; margin: 50px;</string>
-          </property>
           <property name="text">
            <string>В разработке</string>
           </property>
@@ -1259,29 +852,32 @@ QFrame#ratingBlock {
        </layout>
       </widget>
       <widget class="QWidget" name="feedbackTab">
-       <attribute name="title">
+        <attribute name="title">
         <string>Отзывы</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="feedbackLayout">
-        <item>
-         <widget class="QLabel" name="feedbackPlaceholder">
-          <property name="styleSheet">
-           <string notr="true">font-size: 18px; color: #999; margin: 50px;</string>
-          </property>
-          <property name="text">
-           <string>В разработке</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignmentFlag::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
+        </attribute>
+            <layout class="QVBoxLayout" name="feedbackLayout">
+                <property name="leftMargin">
+                    <number>16</number>
+                </property>
+                <property name="topMargin">
+                    <number>16</number>
+                </property>
+                <property name="rightMargin">
+                    <number>16</number>
+                </property>
+                <property name="bottomMargin">
+                    <number>16</number>
+                </property>
+                <item>
+                    <widget class="QListWidget" name="feedbackList"/>
+                </item>
+            </layout>
+        </widget>
      </widget>
     </item>
    </layout>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <resources/>
  <connections/>
