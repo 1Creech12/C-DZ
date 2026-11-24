@@ -19,12 +19,10 @@ ScheduleManager::ScheduleManager(ApiClient *apiClient, QObject *parent)
     // Парсер расписания
     m_parserRunner = new ParserRunner(this);
     setupParserConnections();
-
     // Парсер домашних заданий
     m_homeworkRunner = new ParserRunner(this);
     setupHomeworkParserConnections();
-
-    // Загружаем ДЗ при старте
+    // ДЗ
     loadHomeworkFromDb();
 }
 
@@ -490,13 +488,11 @@ void ScheduleManager::startMetricsSync()
             } else {
                 qWarning() << "Ошибка парсера метрик:" << msg;
             }
-            // Убрал emit syncFinished() отсюда — цепочка продолжается
             startRatingSync();
         });
 
         connect(m_metricsRunner, &ParserRunner::parserError, this, [this](const QString &error) {
             qWarning() << "Ошибка парсера метрик:" << error;
-            // Не завершаем синхронизацию, пробуем продолжить
             startRatingSync();
         });
     }
@@ -576,7 +572,7 @@ void ScheduleManager::startRatingSync()
     if (scriptPath.isEmpty()) {
         qWarning() << "rating.py не найден";
         loadRatingFromDb();
-        startUserInfoSync();    // продолжаем цепочку
+        startUserInfoSync();
         startFeedbackSync();
         return;
     }
@@ -593,7 +589,6 @@ void ScheduleManager::startRatingSync()
         });
 
         connect(m_ratingRunner, &ParserRunner::parserError, this, [this](const QString & /*error*/) {
-            // Продолжаем цепочку даже при ошибке
             startUserInfoSync();
             startFeedbackSync();
         });
@@ -691,7 +686,7 @@ void ScheduleManager::startUserInfoSync()
     }
 
     if (scriptPath.isEmpty()) {
-        qWarning() << "user_info.py не найден";
+        qWarning() << "user.py не найден";
         loadUserInfoFromDb();
         return;
     }
@@ -735,7 +730,6 @@ void ScheduleManager::startFeedbackSync()
     if (scriptPath.isEmpty()) {
         qWarning() << "feedback.py не найден";
         loadFeedbackFromDb();
-        // Завершаем синхронизацию даже без парсера
         emit syncStatusChanged("Синхронизация завершена");
         m_isSyncing = false;
         emit syncFinished();
@@ -749,7 +743,6 @@ void ScheduleManager::startFeedbackSync()
                 loadFeedbackFromDb();
                 emit feedbackUpdated();
             }
-            // Финальное завершение всей цепочки
             emit syncStatusChanged("Синхронизация завершена");
             m_isSyncing = false;
             emit syncFinished();
@@ -757,7 +750,6 @@ void ScheduleManager::startFeedbackSync()
 
         connect(m_feedbackRunner, &ParserRunner::parserError, this, [this](const QString &error) {
             qWarning() << "Ошибка парсера отзывов:" << error;
-            // Даже при ошибке завершаем синхронизацию
             emit syncStatusChanged("Синхронизация завершена");
             m_isSyncing = false;
             emit syncFinished();

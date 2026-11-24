@@ -89,14 +89,14 @@ void AuthManager::processLoginResponse(const QJsonObject &json)
     QJsonObject jwtPayload = decodeJwtPayload(m_authData.access_token);
     m_authData.user_id = jwtPayload["userId"].toInt();
 
-    qDebug() << "🔍 Поиск имени:";
-    qDebug() << "  display_name из ответа:" << json["display_name"].toString();
-    qDebug() << "  name из JWT:" << jwtPayload["name"].toString();
-    qDebug() << "  first_name:" << json["first_name"].toString();
-    qDebug() << "  last_name:" << json["last_name"].toString();
-    qDebug() << "  username:" << json["username"].toString();
-    qDebug() << "  user_role:" << m_authData.user_role;
-    qDebug() << "  user_id:" << m_authData.user_id;
+    qDebug() << "\tПоиск имени:";
+    qDebug() << "\tdisplay_name из ответа:" << json["display_name"].toString();
+    qDebug() << "\tname из JWT:" << jwtPayload["name"].toString();
+    qDebug() << "\tfirst_name:" << json["first_name"].toString();
+    qDebug() << "\tlast_name:" << json["last_name"].toString();
+    qDebug() << "\tusername:" << json["username"].toString();
+    qDebug() << "\tuser_role:" << m_authData.user_role;
+    qDebug() << "\tuser_id:" << m_authData.user_id;
 
     m_authData.display_name = jwtPayload["name"].toString();
 
@@ -114,9 +114,9 @@ void AuthManager::processLoginResponse(const QJsonObject &json)
     saveToSettings();
     scheduleAutoRefresh();
 
-    qDebug() << "   Вход выполнен. Пользователь ID:" << m_authData.user_id;
-    qDebug() << "   Роль:" << m_authData.user_role;
-    qDebug() << "   Город:" << m_authData.city_data.name;
+    qDebug() << "\tВход выполнен. Пользователь ID:" << m_authData.user_id;
+    qDebug() << "\tРоль:" << m_authData.user_role;
+    qDebug() << "\tГород:" << m_authData.city_data.name;
 
     fetchUserProfile();
 
