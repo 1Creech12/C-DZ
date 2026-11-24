@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ProgV\\source\\repos\\ADO\\ADO\\ADO.csproj": {}
+    "/Users/creech12/Documents/projects/C-DZ/ADO.NET/Number_One/ADO/ADO/ADO.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ProgV\\source\\repos\\ADO\\ADO\\ADO.csproj": {
+    "/Users/creech12/Documents/projects/C-DZ/ADO.NET/Number_One/ADO/ADO/ADO.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ProgV\\source\\repos\\ADO\\ADO\\ADO.csproj",
+        "projectUniqueName": "/Users/creech12/Documents/projects/C-DZ/ADO.NET/Number_One/ADO/ADO/ADO.csproj",
         "projectName": "ADO",
-        "projectPath": "C:\\Users\\ProgV\\source\\repos\\ADO\\ADO\\ADO.csproj",
-        "packagesPath": "C:\\Users\\ProgV\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ProgV\\source\\repos\\ADO\\ADO\\obj\\",
+        "projectPath": "/Users/creech12/Documents/projects/C-DZ/ADO.NET/Number_One/ADO/ADO/ADO.csproj",
+        "packagesPath": "/Users/creech12/.nuget/packages/",
+        "outputPath": "/Users/creech12/Documents/projects/C-DZ/ADO.NET/Number_One/ADO/ADO/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ProgV\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/creech12/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -41,7 +39,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.400"
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
         "net10.0": {
@@ -63,7 +61,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.400/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.301/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
